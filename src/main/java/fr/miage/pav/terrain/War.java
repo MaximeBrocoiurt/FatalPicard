@@ -53,16 +53,20 @@ public class War extends JPanel implements Runnable
     public void run()
     {
         int i = 0, nombreDeRobotsVivants = (int)robots.stream().filter(r -> r.getVie() > 0).count();
-        while(nombreDeRobotsVivants > 0)
+        while(nombreDeRobotsVivants > 1)
         {
             if(robots.get(i).getVie() > 0)
             {
                 robots.get(i).agir(robots);
+                String out = robots.get(i).getAtq().atqRobot(robots.get((i + 1) % nombreDeRobotsVivants), 10);
+                System.out.println(out);
             }
             i = (i + 1) % nombreDeRobotsVivants;
             try{Thread.sleep(DELAI);} catch(Exception e) {}
+            nombreDeRobotsVivants = (int)robots.stream().filter(r -> r.getVie() > 0).count();
             repaint();
         }
+        System.out.println("Fin du duel");
     }
     /**
      * Permet de gￃﾩnￃﾩrer des robots positionnￃﾩs alￃﾩatoirement sur la war.
