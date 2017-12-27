@@ -27,6 +27,7 @@ public class War extends JPanel implements Runnable
         this.longueur = longueur;
         this.largeur = largeur;
         this.robots = genererRobots(nombre);
+        setPreferredSize(new Dimension(longueur, largeur));
     }
 
     public void demarrer()
@@ -70,7 +71,7 @@ public class War extends JPanel implements Runnable
         Random r = new Random();
         for(int i = 0; i < nombre; i++)
         {
-            retour.add(new Robot(250, 250, this));
+            retour.add(new Robot(r.nextInt(longueur), r.nextInt(largeur), this));
         }
         return retour;
     }
