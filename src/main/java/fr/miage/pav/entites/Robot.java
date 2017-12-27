@@ -39,6 +39,8 @@ public class Robot
     {
         Robot plusProche = trouverPlusProche(robots);
         int distance = plusProche.calculerDistance(this);
+        if(distance == 0)
+            distance = 1;
         x = (DISTANCE_BASE * (plusProche.getX() - x)) / distance + x;
         y = (DISTANCE_BASE * (plusProche.getY() - y)) / distance + y;
     }
