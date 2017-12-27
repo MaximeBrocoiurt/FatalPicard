@@ -46,9 +46,12 @@ public class Attaque {
      */
     public String atqRobot(Robot target, int power) {
         if(verifRange(target)) {
-            if (me.getEnergie() - 20 <= 0) {
+            if (me.getEnergie() - 20 < 0) {
                 me.setEnergie(100);
                 return "Gain energie";
+            } else if(target.getVie() - power <= 0) {
+                target.setVie(0);
+                return "killed";
             } else {
                 target.attaquer(power);
             }

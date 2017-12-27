@@ -1,5 +1,6 @@
 package fr.miage.pav.entites;
 
+import fr.miage.pav.plugins.Attaque;
 import fr.miage.pav.terrain.War;
 
 import java.awt.*;
@@ -13,6 +14,7 @@ public class Robot
     private int vie, energie;
     private int x, y;
     private War war;
+    private Attaque atq;
 
     /**
      * Constructeur.
@@ -28,6 +30,7 @@ public class Robot
         this.x = x;
         this.y = y;
         this.war = war;
+        this.atq = new Attaque(this, 10);
     }
 
     public void dessiner(Graphics g)
@@ -61,7 +64,8 @@ public class Robot
 
     public void attaquer(int decrease)
     {
-        vie =- decrease;
+        vie -= decrease;
+        energie -= 20;
     }
 
     public void agir(ArrayList<Robot> robots)
@@ -125,5 +129,13 @@ public class Robot
 
     public void setEnergie(int energie) {
         this.energie = energie;
+    }
+
+    public void setVie(int vie) {
+        this.vie = vie;
+    }
+
+    public Attaque getAtq() {
+        return atq;
     }
 }
