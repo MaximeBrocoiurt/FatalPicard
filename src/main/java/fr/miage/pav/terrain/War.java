@@ -66,7 +66,8 @@ public class War extends JPanel implements Runnable
             nombreDeRobotsVivants = (int)robots.stream().filter(r -> r.getVie() > 0).count();
             repaint();
         }
-        System.out.println("Fin du duel");
+        robots = getRobotsVivants();
+        System.out.println("Fin du duel " + robots.get(0) + " gagne avec " + robots.get(0).getVie() + " point de vie");
     }
     /**
      * Permet de gￃﾩnￃﾩrer des robots positionnￃﾩs alￃﾩatoirement sur la war.
