@@ -42,20 +42,20 @@ public class Robot
         if(distance == 0)
             distance = 1;
         x = (DISTANCE_BASE * (plusProche.getX() - x)) / distance + x;
-        if(x < LARGEUR_BASE)
+        if(x < LARGEUR_BASE / 2)
         {
-            x = LARGEUR_BASE;
-        } else if(x > war.getWidth())
+            x = LARGEUR_BASE / 2;
+        } else if(x > war.getWidth() - LARGEUR_BASE / 2)
         {
-            x = war.getWidth() + LARGEUR_BASE;
+            x = war.getWidth() + LARGEUR_BASE / 2;
         }
         y = (DISTANCE_BASE * (plusProche.getY() - y)) / distance + y;
-        if(y < LARGEUR_BASE)
+        if(y < LARGEUR_BASE / 2)
         {
-            y = LARGEUR_BASE;
-        } else if(y > war.getHeight())
+            y = LARGEUR_BASE / 2;
+        } else if(y > war.getHeight() - LARGEUR_BASE / 2)
         {
-            y = war.getHeight() + LARGEUR_BASE;
+            y = war.getHeight() + LARGEUR_BASE / 2;
         }
     }
 
