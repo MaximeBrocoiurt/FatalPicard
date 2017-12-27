@@ -1,6 +1,7 @@
 package fr.miage.pav.terrain;
 
 import fr.miage.pav.entites.Robot;
+import fr.miage.pav.plugins.Attaque;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class War extends JPanel implements Runnable
 {
-    private static final int DELAI = 10;
+    private static final int DELAI = 50;
 
     private ArrayList<Robot> robots;
     private int longueur, largeur;
@@ -63,7 +64,6 @@ public class War extends JPanel implements Runnable
             repaint();
         }
     }
-
     /**
      * Permet de gￃﾩnￃﾩrer des robots positionnￃﾩs alￃﾩatoirement sur la war.
      * @param nombre nombre de robots ￃﾠ gￃﾩnￃﾩrer.

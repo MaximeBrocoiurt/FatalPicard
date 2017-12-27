@@ -59,9 +59,9 @@ public class Robot
         }
     }
 
-    public void attaquer()
+    public void attaquer(int decrease)
     {
-        y = y + DISTANCE_BASE;
+        vie =- decrease;
     }
 
     public void agir(ArrayList<Robot> robots)
@@ -121,5 +121,9 @@ public class Robot
     public int getY()
     {
         return y;
+    }
+
+    public void setEnergie(int energie) {
+        this.energie = energie;
     }
 }
