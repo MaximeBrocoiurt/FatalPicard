@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class War extends JPanel implements Runnable
 {
-    private static final int DELAI = 50;
+    private static final int DELAI = 10;
 
     private ArrayList<Robot> robots;
     private int longueur, largeur;
@@ -30,6 +30,9 @@ public class War extends JPanel implements Runnable
         setPreferredSize(new Dimension(longueur, largeur));
     }
 
+    /**
+     * Lance un thread
+     */
     public void demarrer()
     {
         t = new Thread(this);

@@ -42,7 +42,21 @@ public class Robot
         if(distance == 0)
             distance = 1;
         x = (DISTANCE_BASE * (plusProche.getX() - x)) / distance + x;
+        if(x < LARGEUR_BASE)
+        {
+            x = LARGEUR_BASE;
+        } else if(x > war.getWidth())
+        {
+            x = war.getWidth() + LARGEUR_BASE;
+        }
         y = (DISTANCE_BASE * (plusProche.getY() - y)) / distance + y;
+        if(y < LARGEUR_BASE)
+        {
+            y = LARGEUR_BASE;
+        } else if(y > war.getHeight())
+        {
+            y = war.getHeight() + LARGEUR_BASE;
+        }
     }
 
     public void attaquer()
