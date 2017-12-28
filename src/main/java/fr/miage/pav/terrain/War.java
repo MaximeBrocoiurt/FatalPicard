@@ -1,7 +1,6 @@
 package fr.miage.pav.terrain;
 
 import fr.miage.pav.entites.Robot;
-import fr.miage.pav.plugins.Attaque;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,20 +54,34 @@ public class War extends JPanel implements Runnable
         int i = 0, nombreDeRobotsVivants = (int)robots.stream().filter(r -> r.getVie() > 0).count();
         while(nombreDeRobotsVivants > 1)
         {
-            if(robots.get(i).getVie() > 0)
+            int lifeTarget = robots.get((i + 1) % nombreDeRobotsVivants).getVie();
+            robots = winner(robots);
+            if(robots.get(i).getVie() > 0 && lifeTarget > 0)
             {
+                lifeTarget = robots.get((i + 1) % nombreDeRobotsVivants).getVie();
                 robots.get(i).agir(robots);
                 String out = robots.get(i).getAtq().atqRobot(robots.get((i + 1) % nombreDeRobotsVivants), 10);
                 System.out.println(out);
             }
+            nombreDeRobotsVivants = (int)robots.stream().filter(r -> r.getVie() > 0).count();
             i = (i + 1) % nombreDeRobotsVivants;
             try{Thread.sleep(DELAI);} catch(Exception e) {}
-            nombreDeRobotsVivants = (int)robots.stream().filter(r -> r.getVie() > 0).count();
             repaint();
+            System.out.println(nombreDeRobotsVivants);
         }
-        robots = getRobotsVivants();
+//        robots = winner(robots);
         System.out.println("Fin du duel " + robots.get(0) + " gagne avec " + robots.get(0).getVie() + " point de vie");
     }
+
+    private ArrayList<Robot> winner(ArrayList<Robot> listRobots) {
+        for (Robot r: listRobots) {
+            if (r.getVie() == 0) {
+                listRobots.remove(r);
+            }
+        }
+        return listRobots;
+    }
+
     /**
      * Permet de gￃﾩnￃﾩrer des robots positionnￃﾩs alￃﾩatoirement sur la war.
      * @param nombre nombre de robots ￃﾠ gￃﾩnￃﾩrer.

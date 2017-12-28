@@ -54,8 +54,8 @@ public class Attaque {
                 return "killed";
             } else {
                 target.attaquer(power);
+                return "-" + power;
             }
-            return "-" + power;
         } else {
             return "Missed";
         }
