@@ -13,7 +13,7 @@ public class Entrey
         JFrame f = new JFrame("RobotWar");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        War w = new War(500, 500, 2);
+        War w = new War(500, 500, 4);
         f.getContentPane().add(w, BorderLayout.CENTER);
         new Thread(w).start();
 

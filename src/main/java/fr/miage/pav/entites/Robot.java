@@ -88,7 +88,7 @@ public class Robot
      * @param robots liste des robots
      * @return robot le plus proche
      */
-    private Robot trouverPlusProche(ArrayList<Robot> robots)
+    public Robot trouverPlusProche(ArrayList<Robot> robots)
     {
         Robot retour = null;
         int distanceMinimale = Integer.MAX_VALUE, tampon;
