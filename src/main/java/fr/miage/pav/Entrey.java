@@ -4,6 +4,7 @@ import fr.miage.pav.terrain.War;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 public class Entrey
 {
@@ -13,6 +14,7 @@ public class Entrey
         JFrame f = new JFrame("RobotWar");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        File myPlugin= new File("C:/Users/DogiDogiDog/Documents/GitHub/FatalPicard");
         War w = new War(500, 500, 4);
         f.getContentPane().add(w, BorderLayout.CENTER);
         new Thread(w).start();

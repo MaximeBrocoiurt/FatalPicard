@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
@@ -35,12 +37,13 @@ public class ClassLoader extends SecureClassLoader {
      * @return
      * @throws ClassNotFoundException
      */
-    @// TODO: 28/12/2017 regarder le mécanisme de chargement des classes avec anotation + stocker les plugins chargé
+    // TODO: 28/12/2017 regarder le mécanisme de chargement des classes avec anotation + stocker les plugins chargé
     private byte[] loadClassData(String name) throws ClassNotFoundException {
         for (File plugin : pathPlugins) {
-            if(plugin.getPath().endsWith(".zip") ||  plugin.getPath().endsWith(".jar")) try {
-                ZipFile zFile = new ZipFile(plugin);
-                Enumeration<? extends ZipEntry> entries = zFile.entries();
+            if(plugin.getPath().endsWith(".jar"))
+                try {
+                    JarFile jarFile = new JarFile(plugin.getPath());
+                Enumeration<? extends JarEntry> entries = jarFile.entries();
                 while (entries.hasMoreElements()) {
                     ZipEntry entry = entries.nextElement();
                     if (entry.toString().endsWith(".class")) {
