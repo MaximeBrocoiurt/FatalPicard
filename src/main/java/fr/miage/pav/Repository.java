@@ -31,17 +31,14 @@ public class Repository {
         for(File file : listFile) {
             String pathRep = this.repBase.getPath();
             int result = file.getPath().compareTo(pathRep) + 1;
-            String nomPackage = "";
+            String pathPackage = "";
             if(result > 0) {
-                String pathPackage = file.getPath().substring(pathRep.length());
-                pathPackage = pathPackage.substring(0, pathPackage.lastIndexOf("\\"));
+                pathPackage = file.getPath().substring(pathRep.length());
                 pathPackage = pathPackage.substring(pathPackage.indexOf("\\") + 1);
-                nomPackage = pathPackage.replace("\\", ".");
             }
 
-            String nomClasse = file.getName().substring(0, file.getName().lastIndexOf("."));
             try {
-                listeClasses.add(mcl.loadClass(nomPackage + "." + nomClasse));
+                listeClasses.add(mcl.loadClass(pathPackage));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
