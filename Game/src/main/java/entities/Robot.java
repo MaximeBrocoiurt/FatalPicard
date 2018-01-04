@@ -5,6 +5,7 @@ import plugins.IAttack;
 import plugins.IMove;
 import plugins.attacks.Attack;
 import identity.IRobot;
+import plugins.moves.HugMove;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class Robot implements IRobot
         this.y = y;
         this.war = war;
         this.attack = new Attack(this, 10, 10);
+        this.move = new HugMove();
     }
 
     /**
@@ -52,7 +54,17 @@ public class Robot implements IRobot
      */
     public void move(ArrayList<IRobot> robots)
     {
+        move.move(this, robots);
+    }
 
+    /**
+     * demande au robot d’en attaquer un autre.
+     * @param target
+     */
+    @Override
+    public void attack(IRobot target) throws Exception
+    {
+        attack.attack(target);
     }
 
     /**
@@ -68,7 +80,7 @@ public class Robot implements IRobot
 
     /**
      * Demande au robot de faire quelque chose.
-     * @param robots liste des
+     * @param robots liste des ennemis.
      */
     public void act(ArrayList<IRobot> robots)
     {
@@ -125,25 +137,33 @@ public class Robot implements IRobot
     @Override
     public void decreaseLife(int amount)
     {
-        life -= amount;
+        life = life - amount;
+        if(life < 0)
+            life = 0;
     }
 
     @Override
     public void increaseLife(int amount)
     {
-        life += amount;
+        life = life + amount;
+        if(life > BASE_LIFE)
+            life = BASE_LIFE;
     }
 
     @Override
     public void decreaseEnergy(int amount)
     {
-        life -= amount;
+        energy -= amount;
+        if(energy < 0)
+            energy = 0;
     }
 
     @Override
     public void increaseEnergy(int amount)
     {
-        life += amount;
+        energy += amount;
+        if(energy > BASE_ENERGY)
+            energy = BASE_ENERGY;
     }
 
 
