@@ -12,14 +12,14 @@
     <artifactId>Game</artifactId>
     <dependencies>
         <dependency>
-            <groupId>${parent.groupId}</groupId>
+            <groupId>${project.parent.groupId}</groupId>
             <artifactId>Shared</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>fr.miage.pav</groupId>
+            <groupId>${project.parent.groupId}</groupId>
             <artifactId>Plugins</artifactId>
-            <version>0.1</version>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 
