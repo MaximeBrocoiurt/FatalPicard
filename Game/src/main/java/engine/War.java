@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class War extends JPanel implements Runnable
 {
@@ -38,6 +37,7 @@ public class War extends JPanel implements Runnable
     public void launch()
     {
         thread = new Thread(this);
+        thread.start();
     }
 
     /**
@@ -48,10 +48,15 @@ public class War extends JPanel implements Runnable
     public void run()
     {
         int i = 0;
+        ArrayList<IRobot> ennemis;
         while(robots.size() > 1)
         {
+            System.out.format("Début du tour du robot ; il a %d vie, %d énergie et se trouve en %d;%d\n", robots.get(i).getLife(), robots.get(i).getEnergy(), robots.get(i).getX(), robots.get(i).getY());
             robots.get(i).increaseEnergy(ENERGY_REFILL);
-            robots.get(i).act(robots);
+            ennemis = new ArrayList<>(robots);
+            ennemis.remove(i);
+            robots.get(i).act(ennemis);
+            System.out.println("Le robot a agi.");
             removeDestroyedRobots();
             repaint();
             try
