@@ -19,7 +19,8 @@ public class Entrey
 
         War w = new War(500, 500, 4);
         f.getContentPane().add(w, BorderLayout.CENTER);
-        new Thread(w).start();
+//        new Thread(w).start();
+        w.launch();
 
         f.pack();
         f.setVisible(true);
