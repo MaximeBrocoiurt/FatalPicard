@@ -1,4 +1,4 @@
-package fr.miage.pav;
+package loader;
 
 import java.security.SecureClassLoader;
 import java.io.File;
@@ -44,30 +44,30 @@ public class ClassLoader extends SecureClassLoader {
                 try {
                     JarFile jarFile = new JarFile(plugin.getPath() + File.separator + name);
                     Enumeration<? extends JarEntry> entries = jarFile.entries();
-                while (entries.hasMoreElements()) {
-                    ZipEntry entry = entries.nextElement();
-                    if (entry.toString().endsWith(".class")) {
-                        String nomPackage = plugin.getPath();
-                        nomPackage = nomPackage.replace(plugin.getName(), "");
-                        //System.out.println(plugin.getPath());
+                    while (entries.hasMoreElements()) {
+                        ZipEntry entry = entries.nextElement();
+                        if (entry.toString().endsWith(".class")) {
+                            String nomPackage = plugin.getPath();
+                            nomPackage = nomPackage.replace(plugin.getName(), "");
+                            //System.out.println(plugin.getPath());
 
-                        String nomFichier = entry.toString();
-                        String nomClasse = nomFichier.replace("/", ".");
-                        nomClasse = nomClasse.substring(0, nomClasse.lastIndexOf('.'));
-                        //System.out.println(nomFichier.substring(nomFichier.lastIndexOf('f'), ));
+                            String nomFichier = entry.toString();
+                            String nomClasse = nomFichier.replace("/", ".");
+                            nomClasse = nomClasse.substring(0, nomClasse.lastIndexOf('.'));
+                            //System.out.println(nomFichier.substring(nomFichier.lastIndexOf('f'), ));
 
-                        if (nomClasse.contains(name.substring(0, name.lastIndexOf('.')))) {
-                            File f = new File(nomFichier);
-                            System.out.println(f.getAbsolutePath());
-                            Path cheminFichier = Paths.get(f.getAbsolutePath());
-                            byte[] fileData = Files.readAllBytes(cheminFichier);
-                            return fileData;
+                            if (nomClasse.contains(name.substring(0, name.lastIndexOf('.')))) {
+                                File f = new File(nomFichier);
+                                System.out.println(f.getAbsolutePath());
+                                Path cheminFichier = Paths.get(f.getAbsolutePath());
+                                byte[] fileData = Files.readAllBytes(cheminFichier);
+                                return fileData;
+                            }
                         }
                     }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
             else {
                 System.out.println("Format du plugin incorrect");
             }

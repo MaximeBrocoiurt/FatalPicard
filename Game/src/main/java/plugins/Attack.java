@@ -1,10 +1,10 @@
-package fr.miage.pav.plugins;
+package plugins;
 
-import fr.miage.pav.entites.Robot;
+import entities.Robot;
 
 import java.awt.*;
 
-public class Attaque {
+public class Attack {
     private Robot me;
     private int range;
 
@@ -12,7 +12,7 @@ public class Attaque {
      * Construct atq for robot and range
      * @param me
      */
-    public Attaque(Robot me, int range) {
+    public Attack(Robot me, int range) {
         this.range = range;
         this.me = me;
     }
@@ -46,14 +46,14 @@ public class Attaque {
      */
     public String atqRobot(Robot target, int power) {
         if(verifRange(target)) {
-            if (me.getEnergie() - 20 < 0) {
-                me.setEnergie(100);
+            if (me.getEnergy() - 20 < 0) {
+                me.setEnergy(100);
                 return "Gain energie";
-            } else if(target.getVie() - power <= 0) {
-                target.setVie(0);
+            } else if(target.getLife() - power <= 0) {
+                target.setLife(0);
                 return "killed";
             } else {
-                target.attaquer(power);
+                target.attack(power);
                 return "-" + power;
             }
         } else {

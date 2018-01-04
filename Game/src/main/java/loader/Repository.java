@@ -1,4 +1,4 @@
-package fr.miage.pav;
+package loader;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class Repository {
             }
         }
 
-		return listeClasses;
+        return listeClasses;
     }
 
 
