@@ -13,7 +13,7 @@ public class War extends JPanel implements Runnable
     /**
      * Delai entre deux tours.
      */
-    private static final int DELAY = 50;
+    private static final int DELAY = 100;
     private static final int ENERGY_REFILL = 20;
 
     private ArrayList<IRobot> robots;
@@ -61,7 +61,7 @@ public class War extends JPanel implements Runnable
             repaint();
             try
             {
-                Thread.sleep(DELAY);
+                Thread.sleep(DELAY / robots.size());
             } catch(Exception e) {}
             i = (i + 1) % robots.size();
         }
