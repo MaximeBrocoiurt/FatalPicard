@@ -1,6 +1,7 @@
 package engine;
 
 import entities.Robot;
+import plugins.AttackLongRange;
 import plugins.AttackSmallRange;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ public class War extends JPanel implements Runnable
     /**
      * Delai entre deux tours.
      */
-    private static final int DELAY = 50;
+    private static final int DELAY = 100;
 
     private ArrayList<Robot> robots;
     private Thread thread;
@@ -75,7 +76,15 @@ public class War extends JPanel implements Runnable
     public void giveAttack()
     {
         for (Robot r:robots) {
-            r.setAttack(new AttackSmallRange(r));
+            int randomNumber = 1 + (int)(Math.random() * ((2 - 1) + 1));
+            switch (randomNumber) {
+                case 1:
+                    r.setAttack(new AttackSmallRange(r));
+                    break;
+                case 2:
+                    r.setAttack(new AttackLongRange(r));
+                    break;
+            }
         }
     }
     /**

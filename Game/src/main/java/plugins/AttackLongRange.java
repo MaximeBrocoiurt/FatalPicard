@@ -9,7 +9,7 @@ public class AttackLongRange implements IAttack{
     /**
      * Range et power for melee attack
      */
-    private static final int LONGRANGE = 50;
+    private static final int LONGRANGE = 100;
     private static final int POWERDISTANCE = 5;
 
     private Robot me;
