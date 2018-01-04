@@ -1,11 +1,11 @@
-package plugins.attacks.exceptions;
+package plugins.attack.exceptions;
 
-public class NotEnoughEnergyException extends Exception
+public class NotInRangeException extends Exception
 {
     /**
      * Constructs a new exception
      */
-    public NotEnoughEnergyException()
+    public NotInRangeException()
     {
         super();
     }
@@ -14,7 +14,7 @@ public class NotEnoughEnergyException extends Exception
      * Construit une nouvelle exception avec un message personnalisé;.
      * @param message message personnalisé pour cette exception.
      */
-    public NotEnoughEnergyException(String message)
+    public NotInRangeException(String message)
     {
         super(message);
     }
@@ -24,7 +24,7 @@ public class NotEnoughEnergyException extends Exception
      * @param message nouveau message
      * @param cause ancienne exception à propager
      */
-    public NotEnoughEnergyException(String message, Throwable cause)
+    public NotInRangeException(String message, Throwable cause)
     {
         super(message, cause);
     }
@@ -33,7 +33,7 @@ public class NotEnoughEnergyException extends Exception
      * Construit une nouvelle exception à partir d’une autre.
      * @param cause ancienne exception à propager.
      */
-    public NotEnoughEnergyException(Throwable cause)
+    public NotInRangeException(Throwable cause)
     {
         super(cause);
     }

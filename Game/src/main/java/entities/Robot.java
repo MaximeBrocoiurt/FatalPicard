@@ -1,12 +1,12 @@
 package entities;
 
 import engine.War;
-import plugins.IAttack;
-import plugins.IMove;
+import plugins.attack.IAttack;
+import plugins.move.IMove;
 import identity.IRobot;
-import plugins.attacks.AttackLongRange;
-import plugins.attacks.AttackSmallRange;
-import plugins.moves.HugMove;
+import plugins.attack.AttackLongRange;
+import plugins.attack.AttackSmallRange;
+import plugins.move.HugMove;
 
 import java.awt.*;
 import java.util.ArrayList;

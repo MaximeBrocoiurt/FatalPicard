@@ -1,4 +1,4 @@
-package plugins;
+package plugins.move;
 
 import identity.IRobot;
 

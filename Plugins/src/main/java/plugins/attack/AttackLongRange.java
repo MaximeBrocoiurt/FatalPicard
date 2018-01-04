@@ -1,9 +1,8 @@
-package plugins.attacks;
+package plugins.attack;
 
 import identity.IRobot;
-import plugins.IAttack;
-import plugins.attacks.exceptions.NotEnoughEnergyException;
-import plugins.attacks.exceptions.NotInRangeException;
+import plugins.attack.exceptions.NotEnoughEnergyException;
+import plugins.attack.exceptions.NotInRangeException;
 
 public class AttackLongRange implements IAttack
 {

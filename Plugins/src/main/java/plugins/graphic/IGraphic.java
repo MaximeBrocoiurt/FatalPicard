@@ -1,4 +1,4 @@
-package plugins;
+package plugins.graphic;
 
 import identity.IRobot;
 
