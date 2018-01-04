@@ -1,7 +1,9 @@
 package entities;
 
 import engine.War;
-import plugins.Attack;
+import plugins.IAttack;
+import plugins.IMove;
+import plugins.attacks.Attack;
 import identity.IRobot;
 
 import java.awt.*;
@@ -15,7 +17,8 @@ public class Robot implements IRobot
     private int life, energy;
     private int x, y;
     private War war;
-    private Attack attack;
+    private IAttack attack;
+    private IMove move;
 
     /**
      * Constructeur.
@@ -47,53 +50,27 @@ public class Robot implements IRobot
      * Demande au robot d’effectuer un mouvement.
      * @param robots
      */
-    public void move(ArrayList<Robot> robots)
+    public void move(ArrayList<IRobot> robots)
     {
-        Robot closer = findCloser(robots);
-        int distance = closer.calculateDistance(this);
-        if(distance == 0)
-        {
-            distance = 1;
-        }
-        x = (BASE_DISTANCE * (closer.getX() - x)) / distance + x;
-        if(x < BASE_WIDTH / 2)
-        {
-            x = BASE_WIDTH / 2;
-        } else if(x > war.getWidth() - BASE_WIDTH / 2)
-        {
-            x = war.getWidth() + BASE_WIDTH / 2;
-        }
-        y = (BASE_DISTANCE * (closer.getY() - y)) / distance + y;
-        if(y < BASE_WIDTH / 2)
-        {
-            y = BASE_WIDTH / 2;
-        } else if(y > war.getHeight() - BASE_WIDTH / 2)
-        {
-            y = war.getHeight() + BASE_WIDTH / 2;
-        }
+
     }
 
     /**
-     * Method for detect if the target can be atq by the robot
-     * @param target
-     * @return
+     * Vérifie sur le robot fourni en paramètre est à portée de tir.
+     * @param target cible
+     * @return vrai si la cible est à portée
      */
-    public boolean verifRange(IRobot target) {
-        int absTarget = target.getX();
-        int ordTarget = target.getY();
-        int absMe = this.x;
-        int ordMe = this.y;
-
-        return (Math.abs(absMe - absTarget) <= attack.range()) && (Math.abs(ordMe - ordTarget)) <= attack.range();
-    }
-
-    public void attack(int decrease)
+    @Override
+    public boolean checkRange(IRobot target)
     {
-        life -= decrease;
-        energy -= 20;
+        return calculateDistance(target) <= attack.getRange();
     }
 
-    public void act(ArrayList<Robot> robots)
+    /**
+     * Demande au robot de faire quelque chose.
+     * @param robots liste des
+     */
+    public void act(ArrayList<IRobot> robots)
     {
         move(robots);
     }
@@ -103,64 +80,71 @@ public class Robot implements IRobot
      * @param r autre robot
      * @return distance
      */
+    @Override
     public int calculateDistance(IRobot r)
     {
         return (int)Math.hypot(this.x - r.getX(), this.y - r.getY());
     }
 
-    /**
-     * Permet de trouver le robot le plus proche
-     * @param robots liste des robots
-     * @return robot le plus proche
-     */
-    public Robot findCloser(ArrayList<Robot> robots)
-    {
-        Robot closer = null;
-        int minimalDistance = Integer.MAX_VALUE, tampon;
-        for(Robot r : robots)
-        {
-            if(!r.equals(this))
-            {
-                tampon = r.calculateDistance(this);
-                if(tampon < minimalDistance)
-                {
-                    minimalDistance = tampon;
-                    closer = r;
-                }
-            }
-        }
-        return closer;
-    }
-
+    @Override
     public int getEnergy()
     {
         return energy;
     }
 
+    @Override
     public int getLife()
     {
         return life;
     }
 
+    @Override
     public int getX()
     {
         return x;
     }
 
+    @Override
     public int getY()
     {
         return y;
     }
 
-    public void setEnergy(int energy) {
-        this.energy = energy;
+    @Override
+    public void setX(int x)
+    {
+        this.x = x;
     }
 
-    public void setLife(int life) {
-        this.life = life;
+    @Override
+    public void setY(int y)
+    {
+        this.y = y;
     }
 
-    public Attack getAttack() {
-        return attack;
+    @Override
+    public void decreaseLife(int amount)
+    {
+        life -= amount;
     }
+
+    @Override
+    public void increaseLife(int amount)
+    {
+        life += amount;
+    }
+
+    @Override
+    public void decreaseEnergy(int amount)
+    {
+        life -= amount;
+    }
+
+    @Override
+    public void increaseEnergy(int amount)
+    {
+        life += amount;
+    }
+
+
 }
