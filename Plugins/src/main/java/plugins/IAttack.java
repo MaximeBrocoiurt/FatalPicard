@@ -1,10 +1,12 @@
 package plugins;
 
+import identity.IRobot;
+
 import java.awt.*;
 
 public interface IAttack
 {
-    public int power();
-    public int range();
-    public void attack(Point cible);
+    int power();
+    int range();
+    String atqRobot(IRobot target);
 }

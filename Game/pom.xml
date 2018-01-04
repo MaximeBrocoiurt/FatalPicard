@@ -16,6 +16,11 @@
             <artifactId>Shared</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <dependency>
+            <groupId>fr.miage.pav</groupId>
+            <artifactId>Plugins</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
 </project>

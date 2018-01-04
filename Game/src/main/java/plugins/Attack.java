@@ -1,35 +1,25 @@
 package plugins;
 
 import entities.Robot;
+import identity.IRobot;
 
 import java.awt.*;
 
-public class Attack {
+public class Attack implements IAttack{
     private Robot me;
     private int range;
+    private int power;
 
     /**
      * Construct atq for robot and range
      * @param me
      */
-    public Attack(Robot me, int range) {
+    public Attack(Robot me, int range, int power) {
         this.range = range;
         this.me = me;
+        this.power = power;
     }
 
-    /**
-     * Method for detect if the target can be atq by the robot
-     * @param target
-     * @return
-     */
-    public boolean verifRange(Robot target) {
-        int absTarget = target.getX();
-        int ordTarget = target.getY();
-        int absMe = me.getX();
-        int ordMe = me.getY();
-
-        return (Math.abs(absMe - absTarget) <= range) && (Math.abs(ordMe - ordTarget)) <= range;
-    }
 
     /**
      * Method for draw a basic graphic like a rec
@@ -39,13 +29,19 @@ public class Attack {
 
     }
 
-    /**
-     * Method for atq target and decrease that life
-     * @param target
-     * @param power
-     */
-    public String atqRobot(Robot target, int power) {
-        if(verifRange(target)) {
+    @Override
+    public int power() {
+        return this.power;
+    }
+
+    @Override
+    public int range() {
+        return this.range;
+    }
+
+    @Override
+    public String atqRobot(IRobot target) {
+        if(me.verifRange(target)) {
             if (me.getEnergy() - 20 < 0) {
                 me.setEnergy(100);
                 return "Gain energie";

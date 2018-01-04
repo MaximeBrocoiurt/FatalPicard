@@ -31,7 +31,7 @@ public class Robot implements IRobot
         this.x = x;
         this.y = y;
         this.war = war;
-        this.attack = new Attack(this, 10);
+        this.attack = new Attack(this, 10, 10);
     }
 
     /**
@@ -73,6 +73,20 @@ public class Robot implements IRobot
         }
     }
 
+    /**
+     * Method for detect if the target can be atq by the robot
+     * @param target
+     * @return
+     */
+    public boolean verifRange(IRobot target) {
+        int absTarget = target.getX();
+        int ordTarget = target.getY();
+        int absMe = this.x;
+        int ordMe = this.y;
+
+        return (Math.abs(absMe - absTarget) <= attack.range()) && (Math.abs(ordMe - ordTarget)) <= attack.range();
+    }
+
     public void attack(int decrease)
     {
         life -= decrease;
@@ -89,7 +103,7 @@ public class Robot implements IRobot
      * @param r autre robot
      * @return distance
      */
-    private int calculateDistance(Robot r)
+    public int calculateDistance(IRobot r)
     {
         return (int)Math.hypot(this.x - r.getX(), this.y - r.getY());
     }

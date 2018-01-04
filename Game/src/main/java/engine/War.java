@@ -52,7 +52,7 @@ public class War extends JPanel implements Runnable
             if(robots.get(i).getLife() > 0)
             {
                 robots.get(i).act(robots);
-                String out = robots.get(i).getAttack().atqRobot(robots.get(i).findCloser(robots), 10);
+                String out = robots.get(i).getAttack().atqRobot(robots.get(i).findCloser(robots));
                 System.out.println(out);
             }
             robots = winner(robots);
