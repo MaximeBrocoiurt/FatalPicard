@@ -3,6 +3,7 @@ package entities;
 import engine.War;
 import plugins.AttackSmallRange;
 import identity.IRobot;
+import plugins.IAttack;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Robot implements IRobot
     private int life, energy;
     private int x, y;
     private War war;
-    private AttackSmallRange attackSmallRange;
+    private IAttack attack;
 
     /**
      * Constructeur.
@@ -31,7 +32,6 @@ public class Robot implements IRobot
         this.x = x;
         this.y = y;
         this.war = war;
-        this.attackSmallRange = new AttackSmallRange(this);
     }
 
     /**
@@ -84,7 +84,7 @@ public class Robot implements IRobot
         int absMe = this.x;
         int ordMe = this.y;
 
-        return (Math.abs(absMe - absTarget) <= attackSmallRange.range()) && (Math.abs(ordMe - ordTarget)) <= attackSmallRange.range();
+        return (Math.abs(absMe - absTarget) <= attack.range()) && (Math.abs(ordMe - ordTarget)) <= attack.range();
     }
 
     public void attack(int decrease)
@@ -160,7 +160,11 @@ public class Robot implements IRobot
         this.life = life;
     }
 
-    public AttackSmallRange getAttackSmallRange() {
-        return attackSmallRange;
+    public IAttack getAttack() {
+        return attack;
+    }
+
+    public void setAttack(IAttack attackSmallRange) {
+        this.attack = attackSmallRange;
     }
 }

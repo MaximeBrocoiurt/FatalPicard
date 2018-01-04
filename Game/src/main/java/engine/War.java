@@ -1,6 +1,7 @@
 package engine;
 
 import entities.Robot;
+import plugins.AttackSmallRange;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,7 @@ public class War extends JPanel implements Runnable
     {
         setPreferredSize(new Dimension(width, height));
         generateRobots(number, width, height);
+        giveAttack();
     }
 
     /**
@@ -52,7 +54,7 @@ public class War extends JPanel implements Runnable
             if(robots.get(i).getLife() > 0)
             {
                 robots.get(i).act(robots);
-                String out = robots.get(i).getAttackSmallRange().atqRobot(robots.get(i).findCloser(robots));
+                String out = robots.get(i).getAttack().atqRobot(robots.get(i).findCloser(robots));
                 System.out.println(out);
             }
             robots = winner(robots);
@@ -70,6 +72,12 @@ public class War extends JPanel implements Runnable
         return listRobots;
     }
 
+    public void giveAttack()
+    {
+        for (Robot r:robots) {
+            r.setAttack(new AttackSmallRange(r));
+        }
+    }
     /**
      * Permet de gￃﾩnￃﾩrer des robots positionnￃﾩs alFatoirement sur la war.
      * @param number number de robots ￃﾠ gￃﾩnￃﾩrer.

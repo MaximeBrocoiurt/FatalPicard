@@ -28,17 +28,30 @@ public class AttackLongRange implements IAttack{
 
     @Override
     public int power() {
-        return 0;
+        return this.power;
     }
 
     @Override
     public int range() {
-        return 0;
+        return this.range;
     }
 
     @Override
     public String atqRobot(IRobot target) {
-        return null;
+        if(me.verifyRange(target)) {
+            if (me.getEnergy() - 20 < 0) {
+                me.setEnergy(100);
+                return "Gain energie";
+            } else if(target.getLife() - power <= 0) {
+                target.setLife(0);
+                return "killed";
+            } else {
+                target.attack(power);
+                return "-" + power;
+            }
+        } else {
+            return "Missed";
+        }
     }
 
     /**
