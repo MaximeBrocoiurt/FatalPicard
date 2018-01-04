@@ -9,7 +9,6 @@ public interface IRobot
     void draw(Graphics g);
     void attack(IRobot target) throws Exception;
     int calculateDistance(IRobot robot);
-    boolean checkRange(IRobot robot);
     void decreaseLife(int amount);
     void increaseLife(int amount);
     void decreaseEnergy(int amount);

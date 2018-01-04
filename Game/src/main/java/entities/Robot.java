@@ -3,12 +3,14 @@ package entities;
 import engine.War;
 import plugins.IAttack;
 import plugins.IMove;
-import plugins.attacks.Attack;
 import identity.IRobot;
+import plugins.attacks.AttackLongRange;
+import plugins.attacks.AttackSmallRange;
 import plugins.moves.HugMove;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Robot implements IRobot
 {
@@ -35,7 +37,7 @@ public class Robot implements IRobot
         this.x = x;
         this.y = y;
         this.war = war;
-        this.attack = new Attack(this, 10, 10);
+        this.attack = new Random().nextInt(2) > 1 ? new AttackSmallRange() : new AttackLongRange();
         this.move = new HugMove();
     }
 
@@ -64,18 +66,7 @@ public class Robot implements IRobot
     @Override
     public void attack(IRobot target) throws Exception
     {
-        attack.attack(target);
-    }
-
-    /**
-     * Vérifie sur le robot fourni en paramètre est à portée de tir.
-     * @param target cible
-     * @return vrai si la cible est à portée
-     */
-    @Override
-    public boolean checkRange(IRobot target)
-    {
-        return calculateDistance(target) <= attack.getRange();
+        attack.attack(this, target);
     }
 
     /**
@@ -166,5 +157,7 @@ public class Robot implements IRobot
             energy = BASE_ENERGY;
     }
 
-
+    public void setAttack(IAttack attackSmallRange) {
+        this.attack = attackSmallRange;
+    }
 }

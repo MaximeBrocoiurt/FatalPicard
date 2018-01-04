@@ -5,26 +5,11 @@ import plugins.IAttack;
 import plugins.attacks.exceptions.NotEnoughEnergyException;
 import plugins.attacks.exceptions.NotInRangeException;
 
-public class Attack implements IAttack
+public class AttackLongRange implements IAttack
 {
-    private static int ENERGY_REQUIRED = 20;
-
-    private IRobot me;
-    private int range;
-    private int power;
-
-    /**
-     * Constructeur. LOL.
-     * @param me robot à l’origine de l’attauque
-     * @param range portée de l’attaque
-     * @param power puissance de l’attaque
-     */
-    public Attack(IRobot me, int range, int power)
-    {
-        this.range = range;
-        this.me = me;
-        this.power = power;
-    }
+    private final int ENERGY_REQUIRED = 20;
+    private final int RANGE = 100;
+    private final int POWER = 10;
 
     /**
      * Implémentation de attack
@@ -33,14 +18,14 @@ public class Attack implements IAttack
      * @throws NotInRangeException lorsque le robot ennemi n’est pas à portée.
      */
     @Override
-    public void attack(IRobot target) throws NotEnoughEnergyException, NotInRangeException
+    public void attack(IRobot me, IRobot target) throws NotEnoughEnergyException, NotInRangeException
     {
         if(me.getEnergy() > ENERGY_REQUIRED)
         {
-            if(me.checkRange(target))
+            if(me.calculateDistance(target) <= RANGE)
             {
-                target.decreaseLife(power);
-                me.decreaseEnergy(power);
+                target.decreaseLife(POWER);
+                me.decreaseEnergy(POWER);
             } else {
                 throw new NotInRangeException();
             }
@@ -52,12 +37,12 @@ public class Attack implements IAttack
     @Override
     public int getPower()
     {
-        return this.power;
+        return this.POWER;
     }
 
     @Override
     public int getRange()
     {
-        return this.range;
+        return this.RANGE;
     }
 }

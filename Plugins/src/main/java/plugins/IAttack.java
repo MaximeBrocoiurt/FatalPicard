@@ -6,5 +6,5 @@ public interface IAttack
 {
     int getPower();
     int getRange();
-    void attack(IRobot target) throws Exception;
+    void attack(IRobot me, IRobot target) throws Exception;
 }
