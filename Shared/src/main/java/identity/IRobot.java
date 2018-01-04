@@ -7,6 +7,7 @@ public interface IRobot
 {
     void act(ArrayList<IRobot> foes);
     void draw(Graphics g);
+    void attack(IRobot target) throws Exception;
     int calculateDistance(IRobot robot);
     boolean checkRange(IRobot robot);
     void decreaseLife(int amount);
@@ -19,5 +20,4 @@ public interface IRobot
     int getY();
     void setX(int x);
     void setY(int y);
-    void setAttack()
 }

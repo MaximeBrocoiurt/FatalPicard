@@ -40,6 +40,7 @@ public class Attack implements IAttack
             if(me.checkRange(target))
             {
                 target.decreaseLife(power);
+                me.decreaseEnergy(power);
             } else {
                 throw new NotInRangeException();
             }
