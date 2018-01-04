@@ -1,6 +1,7 @@
 package engine;
 
 import entities.Robot;
+import identity.IRobot;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,8 +15,9 @@ public class War extends JPanel implements Runnable
      * Delai entre deux tours.
      */
     private static final int DELAY = 50;
+    private static final int ENERGY_REFILL = 20;
 
-    private ArrayList<Robot> robots;
+    private ArrayList<IRobot> robots;
     private Thread thread;
 
     /**
@@ -45,29 +47,28 @@ public class War extends JPanel implements Runnable
     @Override
     public void run()
     {
-        int i = 0, numberOfAliveRobots = (int)robots.stream().filter(r -> r.getLife() > 0).count();
-        while(numberOfAliveRobots > 1)
+        int i = 0;
+        while(robots.size() > 1)
         {
-            int lifeTarget = robots.get((i + 1) % numberOfAliveRobots).getLife();
-            if(robots.get(i).getLife() > 0)
-            {
-                robots.get(i).act(robots);
-                String out = robots.get(i).getAttack().atqRobot(robots.get(i).findCloser(robots));
-                System.out.println(out);
-            }
-            robots = winner(robots);
-            numberOfAliveRobots = (int)robots.stream().filter(r -> r.getLife() > 0).count();
-            i = (i + 1) % numberOfAliveRobots;
-            try{Thread.sleep(DELAY);} catch(Exception e) {}
+            robots.get(i).increaseEnergy(ENERGY_REFILL);
+            robots.get(i).act(robots);
+            removeDestroyedRobots();
             repaint();
-            System.out.println(numberOfAliveRobots);
+            try
+            {
+                Thread.sleep(DELAY);
+            } catch(Exception e) {}
+            i = (i + 1) % robots.size();
         }
         System.out.println("Fin du duel " + robots.get(0) + " gagne avec " + robots.get(0).getLife() + " point de vie");
     }
 
-    private ArrayList<Robot> winner(ArrayList<Robot> listRobots) {
-        robots.removeIf(r -> r.getLife() == 0);
-        return listRobots;
+    /**
+     * Permet de retirer tous les robots dont la vie est inférieure à zéro.
+     */
+    private void removeDestroyedRobots()
+    {
+        robots.removeIf(r -> r.getLife() <= 0);
     }
 
     /**
@@ -88,18 +89,9 @@ public class War extends JPanel implements Runnable
      * Accesseur de robots.
      * @return liste des robots prￃﾩsents sur la war
      */
-    public ArrayList<Robot> getRobots()
+    public ArrayList<IRobot> getRobots()
     {
         return robots;
-    }
-
-    /**
-     * Retourne une liste des robots encore en vie
-     * @return liste des robots avec une vie supￃﾩrieure ￃﾠ 0.
-     */
-    public ArrayList<Robot> getAliveRobots()
-    {
-        return robots.stream().filter(r -> r.getLife() > 0).collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Override
@@ -109,7 +101,9 @@ public class War extends JPanel implements Runnable
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setStroke(new BasicStroke(3f));
         super.paint(g);
-        for(Robot r : robots)
+        for(IRobot r : robots)
+        {
             r.draw(g);
+        }
     }
 }
