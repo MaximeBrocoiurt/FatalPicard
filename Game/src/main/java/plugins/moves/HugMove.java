@@ -23,10 +23,7 @@ public class HugMove implements IMove
         try
         {
             subject.attack(closer);
-        } catch (Exception e)
-        {
-            System.out.println(e);
-        }
+        } catch (Exception e) { }
     }
 
     /**
