@@ -22,6 +22,7 @@ public class Robot implements IRobot
     private War war;
     private IAttack attack;
     private IMove move;
+    private Color c;
 
     /**
      * Constructeur.
@@ -39,6 +40,8 @@ public class Robot implements IRobot
         this.war = war;
         this.attack = new Random().nextInt(2) > 1 ? new AttackSmallRange() : new AttackLongRange();
         this.move = new HugMove();
+        Random r = new Random();
+        c = new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
     }
 
     /**
@@ -47,6 +50,7 @@ public class Robot implements IRobot
      */
     public void draw(Graphics g)
     {
+        g.setColor(c);
         g.fillRect(x - BASE_WIDTH / 2, y - BASE_WIDTH / 2, BASE_WIDTH, BASE_WIDTH);
     }
 
