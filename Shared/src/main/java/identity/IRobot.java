@@ -9,5 +9,6 @@ public interface IRobot
     void setEnergy(int energy);
     void setLife(int life);
     int calculateDistance(IRobot robot);
+    boolean verifyRange(IRobot target);
     void attack(int decreaseLife);
 }

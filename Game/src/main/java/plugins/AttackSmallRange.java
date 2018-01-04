@@ -5,7 +5,13 @@ import identity.IRobot;
 
 import java.awt.*;
 
-public class Attack implements IAttack{
+public class AttackSmallRange implements IAttack{
+    /**
+     * Range et power for melee attack
+     */
+    private static final int RANGEMELEE = 10;
+    private static final int POWERMELEE = 10;
+
     private Robot me;
     private int range;
     private int power;
@@ -14,19 +20,10 @@ public class Attack implements IAttack{
      * Construct atq for robot and range
      * @param me
      */
-    public Attack(Robot me, int range, int power) {
-        this.range = range;
+    public AttackSmallRange(Robot me) {
+        this.range = RANGEMELEE;
         this.me = me;
-        this.power = power;
-    }
-
-
-    /**
-     * Method for draw a basic graphic like a rec
-     * @param draw
-     */
-    public void drawAtq(Graphics draw) {
-
+        this.power = POWERMELEE;
     }
 
     @Override
@@ -41,7 +38,7 @@ public class Attack implements IAttack{
 
     @Override
     public String atqRobot(IRobot target) {
-        if(me.verifRange(target)) {
+        if(me.verifyRange(target)) {
             if (me.getEnergy() - 20 < 0) {
                 me.setEnergy(100);
                 return "Gain energie";
@@ -55,5 +52,13 @@ public class Attack implements IAttack{
         } else {
             return "Missed";
         }
+    }
+
+    /**
+     * Method for draw a basic graphic like a rec
+     * @param draw
+     */
+    public void drawAtq(Graphics draw) {
+
     }
 }
