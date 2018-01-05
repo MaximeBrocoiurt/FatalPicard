@@ -4,8 +4,8 @@ import engine.War;
 import plugins.attack.IAttack;
 import plugins.move.IMove;
 import identity.IRobot;
-import plugins.attack.AttackLongRange;
-import plugins.attack.AttackSmallRange;
+import plugins.attack.LongRangeAtttack;
+import plugins.attack.SmallRangeAtttack;
 import plugins.move.HugMove;
 
 import java.awt.*;
@@ -38,7 +38,7 @@ public class Robot implements IRobot
         this.x = x;
         this.y = y;
         this.war = war;
-        this.attack = new Random().nextInt(2) > 1 ? new AttackSmallRange() : new AttackLongRange();
+        this.attack = new Random().nextInt(2) > 1 ? new SmallRangeAtttack() : new LongRangeAtttack();
         this.move = new HugMove();
         Random r = new Random();
         c = new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
