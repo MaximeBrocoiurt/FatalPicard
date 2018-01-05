@@ -4,7 +4,7 @@ import identity.IRobot;
 import plugins.attack.exceptions.NotEnoughEnergyException;
 import plugins.attack.exceptions.NotInRangeException;
 
-public class AttackSmallRange implements IAttack
+public class SmallRangeAtttack implements IAttack
 {
     private final int ENERGY_REQUIRED = 20;
     private final int RANGE = 5;
