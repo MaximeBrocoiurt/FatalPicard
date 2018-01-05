@@ -1,13 +1,12 @@
 package plugins.move;
 
 import identity.IRobot;
-import plugins.move.IMove;
 
 import java.util.ArrayList;
 
 public class HugMove implements IMove
 {
-    private static final int RANGE = 5;
+    private static final int DISTANCE = 5;
     private static final int ENERGY_CONSUMED = 5;
     @Override
     public void move(IRobot subject, ArrayList<IRobot> foes)
@@ -16,8 +15,8 @@ public class HugMove implements IMove
         int distance = closer.calculateDistance(subject);
         if(distance != 0)
         {
-            subject.setX((RANGE * (closer.getX() - subject.getX())) / distance + subject.getX());
-            subject.setY((RANGE * (closer.getY() - subject.getY())) / distance + subject.getY());
+            subject.setX((DISTANCE * (closer.getX() - subject.getX())) / distance + subject.getX());
+            subject.setY((DISTANCE * (closer.getY() - subject.getY())) / distance + subject.getY());
         }
         subject.decreaseEnergy(ENERGY_CONSUMED);
         try
