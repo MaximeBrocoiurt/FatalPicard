@@ -1,12 +1,12 @@
 package entities;
 
 import engine.War;
-import plugins.attack.IAttack;
-import plugins.move.IMove;
 import identity.IRobot;
+import plugins.attack.IAttack;
 import plugins.attack.LongRangeAtttack;
 import plugins.attack.SmallRangeAtttack;
 import plugins.move.HugMove;
+import plugins.move.IMove;
 import plugins.move.RandomMove;
 import plugins.move.SchwarzeneggerMove;
 

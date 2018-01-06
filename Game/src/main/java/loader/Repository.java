@@ -27,6 +27,7 @@ public class Repository {
         List<Class<?>> listeClasses = new ArrayList<Class<?>>();
         ArrayList<File> listeClassesRep = parcourirEnProfondeur(this.repBase);
         for (File file : listeClassesRep) {
+
             String pathRep = this.repBase.getPath();
             int result = file.getPath().compareTo(pathRep) + 1;
             String nomPackage = "";
@@ -75,10 +76,10 @@ public class Repository {
 
         Repository r = new Repository(repMaClasse);
         List<Class<?>> classes = r.load();
-        for (Class<?> classe : classes) {
+       /* for (Class<?> classe : classes) {
             System.out.println("Class loaded " + classe);
             System.out.println("Class " + classe + " has been loaded by "
                     + classe.getClassLoader());
-        }
+        }*/
     }
 }

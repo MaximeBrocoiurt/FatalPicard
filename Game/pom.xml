@@ -47,9 +47,10 @@
                         </descriptorRefs>
                         <archive>
                             <manifest>
-                                <mainClass>Entrey</mainClass>
+                                <mainClass>main.Entrey</mainClass>
                             </manifest>
                         </archive>
+                        <outputDirectory>${project.build.outputDirectory}</outputDirectory>
                     </configuration>
                     <executions>
                         <execution>
