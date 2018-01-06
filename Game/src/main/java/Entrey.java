@@ -1,18 +1,26 @@
 import engine.War;
+import loader.MyClassLoader;
+import loader.Repository;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.util.List;
 
 public class Entrey
 {
     public static void main(String[] args)
     {
-//        File basPathPlugin = new File("C:" + File.separator + "Users"+ File.separator +
-//                "Utilisateur" + File.separator + "Documents" + File.separator + "FatalPicard" +
-//                File.separator + "src" + File.separator + "main" + File.separator + "resources");
-//        Repository myLoader = new Repository(basPathPlugin);
-//        List<Class<?>> myPlugin = myLoader.load();
-//        System.out.println(myPlugin.get(0).toString());
+
+       File basPathPlugin = new File(System.getProperty("user.dir") +  File.separatorChar + "plugins"+  File.separatorChar +"target" +  File.separatorChar +"classes");
+        Repository myLoader = new Repository(basPathPlugin);
+
+        List<Class<?>> myPlugin = myLoader.load();
+        for (Class<?> classe : myPlugin) {
+            System.out.println("Class loaded " + classe);
+            System.out.println("Class " + classe + " has been loaded by "
+                    + classe.getClassLoader());
+        }
 
         JFrame f = new JFrame("RobotWar");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
