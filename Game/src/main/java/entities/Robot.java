@@ -5,6 +5,8 @@ import identity.IRobot;
 import plugins.attack.IAttack;
 import plugins.attack.LongRangeAtttack;
 import plugins.attack.SmallRangeAtttack;
+import plugins.graphic.BaseGraphic;
+import plugins.graphic.IGraphic;
 import plugins.move.HugMove;
 import plugins.move.IMove;
 import plugins.move.RandomMove;
@@ -17,7 +19,7 @@ import java.util.Random;
 public class Robot implements IRobot
 {
     private static final int BASE_LIFE = 100, BASE_ENERGY = 100;
-    private static final int BASE_WIDTH = 10, BASE_DISTANCE = 5;
+    private static final int BASE_DISTANCE = 5;
 
     private int life, energy;
     private int x, y;
@@ -25,6 +27,7 @@ public class Robot implements IRobot
     private IAttack attack;
     private IMove move;
     private Color c;
+    private IGraphic drawRobot;
 
     /**
      * Constructeur.
@@ -44,6 +47,7 @@ public class Robot implements IRobot
         this.attack = r.nextInt(2) > 1 ? new SmallRangeAtttack() : new LongRangeAtttack();
         this.move = r.nextInt(3) < 1 ? new HugMove() : r.nextInt(2) < 1 ? new SchwarzeneggerMove() : new RandomMove();
         c = new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
+        drawRobot = new BaseGraphic();
     }
 
     /**
@@ -52,8 +56,7 @@ public class Robot implements IRobot
      */
     public void draw(Graphics g)
     {
-        g.setColor(c);
-        g.fillRect(x - BASE_WIDTH / 2, y - BASE_WIDTH / 2, BASE_WIDTH, BASE_WIDTH);
+        drawRobot.draw(this, g);
     }
 
     /**
