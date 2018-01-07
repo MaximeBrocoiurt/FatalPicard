@@ -3,10 +3,23 @@ package plugins.graphic;
 import identity.IRobot;
 
 import java.awt.*;
+import java.util.Random;
 
 public class BaseGraphic implements IGraphic{
     private Color c;
     private static final int BASE_WIDTH = 10;
+
+    public BaseGraphic() {
+        c = randomColor();
+    }
+    private Color randomColor() {
+        Random rand = new Random();
+        float r = rand.nextFloat();
+        float g = rand.nextFloat();
+        float b = rand.nextFloat();
+        Color randomColor = new Color(r, g, b);
+        return randomColor;
+    }
 
     @Override
     public void draw(IRobot subject, Graphics g) {
