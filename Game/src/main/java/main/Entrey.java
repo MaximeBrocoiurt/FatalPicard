@@ -13,10 +13,12 @@ public class Entrey
 {
     public static void main(String[] args)
     {
-        File basPathPlugin = new File(System.getProperty("user.dir") +  File.separatorChar + "plugins"+  File.separatorChar +"target"+  File.separatorChar +"classes");
+        //On indique où se trouve le dossier contenant les .jar pour y chercher toutes les classes qu'ils faut charger
+        File basPathPlugin = new File(System.getProperty("user.dir") + File.separatorChar + "plugins"+ File.separatorChar + "target");
         System.out.println("Chemin plugins "+basPathPlugin.getPath().toString());
         Repository myLoader = new Repository(basPathPlugin);
 
+        //Une fois chargé, elles sont disponible dans cette liste
         List<Class<?>> myPlugin = myLoader.load();
 
         for(Class classe : myPlugin){

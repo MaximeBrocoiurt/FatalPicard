@@ -2,11 +2,18 @@ package loader;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 
 public class Repository {
@@ -48,28 +55,39 @@ public class Repository {
     }
 
     public ArrayList<File> parcourirEnProfondeur(File fichier) {
-        if(fichier.isDirectory()) {
-            File[] listeFichiers = fichier.listFiles(new FilenameFilter() {
-                public boolean accept(File dir, String name) {
-                    Pattern p = Pattern.compile(".*.class");
-                    Matcher m = p.matcher(name);
-                    return m.matches();
-                }
-            });
-            if(listeFichiers.length == 0) {
-                listeFichiers = fichier.listFiles();
-                for (File file : listeFichiers) {
-                    parcourirEnProfondeur(file);
-                }
-            } else {
-                for (File file : listeFichiers) {
-                    listeClasses.add(file);
-                    parcourirEnProfondeur(file);
+            //System.out.println("CHEMIN "+fichier.getPath());
+        File[] listeFichiers = fichier.listFiles();
+        for(File file : listeFichiers){
+            System.out.println(file.getPath());
+        }
+        for(File file : listeFichiers){
+            if(file.getPath().endsWith(".jar")){
+                try {
+                    System.out.println("C'est un jar :"+file.getPath());
+                    JarFile zFile = new JarFile(file);
+                    Enumeration<? extends JarEntry> entries = zFile.entries();
+                    while(entries.hasMoreElements()){
+                        JarEntry entry = entries.nextElement();
+                        if(entry.toString().endsWith(".class")) {
+                            String nomPackage = file.getPath();
+                            nomPackage = nomPackage.replace(file.getName(), "");
+                            String nomFichier = entry.toString();
+                            //String nomClasse = nomFichier.replace("/", ".");
+                            //nomClasse = nomClasse.substring(0, nomClasse.lastIndexOf('.'));
+                            listeClasses.add(new File(nomPackage + nomFichier));
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
+           // for (File file2 : listeClasses)
+            //System.out.println("File2" +file2.getPath());
+
         }
         return listeClasses;
     }
+
 
     public static void main(String[] args) {
         File repMaClasse = new File("C:\\Users\\DogiDogiDog\\Documents\\GitHub\\FatalPicard\\Plugins\\target\\classes");
