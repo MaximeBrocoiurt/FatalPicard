@@ -23,7 +23,14 @@ public class Entrey
             System.out.println("Classes chargées du plugin : "+classe.getName());
         }
 
+        JFrame f = new JFrame("RobotWar");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        War w = new War(500, 500, 10);
+        f.getContentPane().add(w, BorderLayout.CENTER);
+        w.launch();
 
+        f.pack();
+        f.setVisible(true);
     }
 }
