@@ -10,7 +10,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class testMyClassLoader {
+public class MyClassLoaderTest {
 
     @Test
     public void testLoadJar(){
