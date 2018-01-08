@@ -12,6 +12,7 @@ public class BaseGraphic implements IGraphic{
     public BaseGraphic() {
         c = randomColor();
     }
+
     private Color randomColor() {
         Random rand = new Random();
         float r = rand.nextFloat();

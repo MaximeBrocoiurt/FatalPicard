@@ -8,7 +8,7 @@ public class SmallRangeAtttack implements IAttack
 {
     private final int ENERGY_REQUIRED = 20;
     private final int RANGE = 5;
-    private final int POWER = 25;
+    private final int POWER = 10;
 
     /**
      * Implémentation de attack

@@ -8,7 +8,7 @@ public class LongRangeAtttack implements IAttack
 {
     private final int ENERGY_REQUIRED = 20;
     private final int RANGE = 100;
-    private final int POWER = 10;
+    private final int POWER = 5;
 
     /**
      * Implémentation de attack

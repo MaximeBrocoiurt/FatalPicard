@@ -6,6 +6,7 @@ import plugins.attack.IAttack;
 import plugins.attack.LongRangeAtttack;
 import plugins.attack.SmallRangeAtttack;
 import plugins.graphic.BaseGraphic;
+import plugins.graphic.HealthBarGraphic;
 import plugins.graphic.IGraphic;
 import plugins.move.HugMove;
 import plugins.move.IMove;
@@ -47,7 +48,7 @@ public class Robot implements IRobot
         this.attack = r.nextInt(2) > 1 ? new SmallRangeAtttack() : new LongRangeAtttack();
         this.move = r.nextInt(3) < 1 ? new HugMove() : r.nextInt(2) < 1 ? new SchwarzeneggerMove() : new RandomMove();
         c = new Color(r.nextFloat(), r.nextFloat(), r.nextFloat());
-        drawRobot = new BaseGraphic();
+        drawRobot = new HealthBarGraphic();
     }
 
     /**
