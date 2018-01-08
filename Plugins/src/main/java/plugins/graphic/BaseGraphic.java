@@ -5,25 +5,28 @@ import identity.IRobot;
 import java.awt.*;
 import java.util.Random;
 
-public class BaseGraphic implements IGraphic{
+public class BaseGraphic implements IGraphic
+{
     private Color c;
     private static final int BASE_WIDTH = 10;
 
-    public BaseGraphic() {
+    public BaseGraphic()
+    {
         c = randomColor();
     }
 
-    private Color randomColor() {
+    private Color randomColor()
+    {
         Random rand = new Random();
         float r = rand.nextFloat();
         float g = rand.nextFloat();
         float b = rand.nextFloat();
-        Color randomColor = new Color(r, g, b);
-        return randomColor;
+        return new Color(r, g, b);
     }
 
     @Override
-    public void draw(IRobot subject, Graphics g) {
+    public void draw(IRobot subject, Graphics g)
+    {
         g.setColor(c);
         g.fillRect(subject.getX() - BASE_WIDTH / 2, subject.getY() - BASE_WIDTH / 2, BASE_WIDTH, BASE_WIDTH);
     }
