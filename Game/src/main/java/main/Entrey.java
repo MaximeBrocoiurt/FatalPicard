@@ -10,15 +10,16 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 
+import static java.lang.System.exit;
+
 public class Entrey
 {
     public static void main(String[] args)
     {
         //On indique où se trouve le dossier contenant les .jar pour y chercher toutes les classes qu'ils faut charger
-        File basPathPlugin = new File(System.getProperty("user.dir") + File.separatorChar + "plugins"+ File.separatorChar + "target");
-       // System.out.println("Chemin plugins " + basPathPlugin.getPath());
+        File basPathPlugin = new File(System.getProperty("user.dir") + File.separator + "plugins");
+        // System.out.println("Chemin plugins " + basPathPlugin.getPath());
         PluginLoader myLoader = new PluginLoader(basPathPlugin);
-
         //Une fois chargé, elles sont disponible dans cette liste
         List<Class<?>> myPlugin = myLoader.load();
         //System.out.println(myPlugin);

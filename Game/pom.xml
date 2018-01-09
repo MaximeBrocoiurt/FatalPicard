@@ -33,10 +33,10 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>3.1.0</version>
                     <configuration>
+                        <outputDirectory>${location}</outputDirectory>
                         <descriptorRefs>
                             <descriptorRef>jar-with-dependencies</descriptorRef>
                         </descriptorRefs>
@@ -45,7 +45,6 @@
                                 <mainClass>main.Entrey</mainClass>
                             </manifest>
                         </archive>
-                        <outputDirectory>${project.build.outputDirectory}</outputDirectory>
                     </configuration>
                     <executions>
                         <execution>
