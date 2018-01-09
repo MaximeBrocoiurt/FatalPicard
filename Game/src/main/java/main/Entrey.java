@@ -49,7 +49,13 @@ public class Entrey
         War w = new War(500, 500, Integer.valueOf(args[0]));
         f.getContentPane().add(w, BorderLayout.CENTER);
         f.getContentPane().add(start, BorderLayout.SOUTH);
-        w.launch();
+
+        start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                w.launch();
+            }
+        });
 
         f.pack();
         f.setVisible(true);
