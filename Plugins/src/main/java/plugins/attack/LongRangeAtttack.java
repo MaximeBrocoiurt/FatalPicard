@@ -1,5 +1,6 @@
 package plugins.attack;
 
+import identity.IAttack;
 import identity.IRobot;
 import plugins.attack.exceptions.NotEnoughEnergyException;
 import plugins.attack.exceptions.NotInRangeException;

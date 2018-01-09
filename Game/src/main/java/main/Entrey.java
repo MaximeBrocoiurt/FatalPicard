@@ -46,7 +46,7 @@ public class Entrey
 
         f.getContentPane().add(menu, BorderLayout.NORTH);
 
-        War w = new War(500, 500, Integer.valueOf(args[0]));
+        War w = new War(500, 500, 10,myLoader);
         f.getContentPane().add(w, BorderLayout.CENTER);
         f.getContentPane().add(start, BorderLayout.SOUTH);
 

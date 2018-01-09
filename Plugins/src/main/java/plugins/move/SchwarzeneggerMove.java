@@ -1,5 +1,6 @@
 package plugins.move;
 
+import identity.IMove;
 import identity.IRobot;
 
 import java.util.ArrayList;

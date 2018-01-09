@@ -1,17 +1,12 @@
 package entities;
 
 import engine.War;
+import identity.IAttack;
+import identity.IGraphic;
+import identity.IMove;
 import identity.IRobot;
-import plugins.attack.IAttack;
-import plugins.attack.LongRangeAtttack;
-import plugins.attack.SmallRangeAtttack;
-import plugins.graphic.BaseGraphic;
-import plugins.graphic.HealthBarGraphic;
-import plugins.graphic.IGraphic;
-import plugins.move.HugMove;
-import plugins.move.IMove;
-import plugins.move.RandomMove;
-import plugins.move.SchwarzeneggerMove;
+import loader.PluginLoader;
+
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -22,9 +17,9 @@ public class Robot implements IRobot
     private static final int BASE_LIFE = 100, BASE_ENERGY = 100;
     private static final int BASE_DISTANCE = 5;
 
+    private PluginLoader pl;
     private int life, energy;
     private int x, y;
-    private War war;
     private IAttack attack;
     private IMove move;
     private IGraphic drawRobot;
@@ -33,21 +28,34 @@ public class Robot implements IRobot
      * Constructeur.
      * @param x position en absisses du robot
      * @param y position en ordonnées du robot
-     * @param war war dont dépend le robot
+     *
      */
     //TODO examiner l’intéret de fournir war en paramètre
-    public Robot(int x, int y, War war)
-    {
+    public Robot(int x, int y, PluginLoader pl) {
         this.life = BASE_LIFE;
         this.energy = BASE_ENERGY;
         this.x = x;
         this.y = y;
-        this.war = war;
-        
+        this.pl=pl;
+
         Random r = new Random();
-        this.attack = r.nextInt(2) < 1 ? new SmallRangeAtttack() : new LongRangeAtttack();
-        this.move = r.nextInt(3) < 1 ? new HugMove() : r.nextInt(2) < 1 ? new SchwarzeneggerMove() : new RandomMove();
-        this.drawRobot = r.nextInt(2) < 1 ? new BaseGraphic(): new HealthBarGraphic();
+        System.out.println(r);
+        try {
+            this.attack = r.nextInt(2) < 1 ?
+                    (IAttack) pl.chercherClass("SmallRangeAtttack").newInstance() :
+                    (IAttack) pl.chercherClass("LongRangeAtttack").newInstance();
+            this.move = r.nextInt(3) < 1 ? (IMove) pl.chercherClass("HugMove").newInstance() : r.nextInt(2) < 1 ? (IMove) pl.chercherClass("SchwarzeneggerMove").newInstance() : (IMove) pl.chercherClass("RandomMove").newInstance();
+            this.drawRobot = r.nextInt(2) < 1 ? (IGraphic) pl.chercherClass("BaseGraphic").newInstance() : (IGraphic) pl.chercherClass("HealthBarGraphic").newInstance();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            e.getCause();
+            e.getMessage();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     /**

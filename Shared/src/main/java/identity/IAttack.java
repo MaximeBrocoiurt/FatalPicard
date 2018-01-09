@@ -1,4 +1,4 @@
-package plugins.attack;
+package identity;
 
 import identity.IRobot;
 

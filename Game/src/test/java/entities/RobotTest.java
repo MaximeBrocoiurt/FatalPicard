@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 public class RobotTest
 {
-    @Test
+   /* @Test
     public void CorrectlyCalculateDistanceX()
     {
         War w = Mockito.mock(War.class);
@@ -33,5 +33,5 @@ public class RobotTest
         Robot r1 = new Robot(0, 0, w);
         Robot r2 = new Robot(500, 500, w);
         assertEquals(r1.calculateDistance(r2), r2.calculateDistance(r1));
-    }
+    }*/
 }

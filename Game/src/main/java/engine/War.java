@@ -1,12 +1,15 @@
 package engine;
 
-import entities.Robot;
 import identity.IRobot;
+import entities.Robot;
+import loader.PluginLoader;
+
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
+
 
 public class War extends JPanel implements Runnable
 {
@@ -18,6 +21,7 @@ public class War extends JPanel implements Runnable
 
     private ArrayList<IRobot> robots;
     private Thread thread;
+    private PluginLoader pl;
 
     /**
      * Constructeur. DUH.
@@ -25,8 +29,9 @@ public class War extends JPanel implements Runnable
      * @param height height du terrain, en pixels
      * @param number number de robots à générer
      */
-    public War(int width, int height, int number)
+    public War(int width, int height, int number, PluginLoader pl)
     {
+        this.pl=pl;
         setPreferredSize(new Dimension(width, height));
         generateRobots(number, width, height);
     }
@@ -86,7 +91,7 @@ public class War extends JPanel implements Runnable
         Random r = new Random();
         for(int i = 0; i < number; i++)
         {
-            robots.add(new Robot(r.nextInt(width), r.nextInt(height), this));
+            robots.add(new Robot(r.nextInt(width), r.nextInt(height), this.pl));
         }
     }
 

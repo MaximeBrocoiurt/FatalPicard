@@ -1,5 +1,6 @@
 package plugins.graphic;
 
+import identity.IGraphic;
 import identity.IRobot;
 
 import java.awt.*;
