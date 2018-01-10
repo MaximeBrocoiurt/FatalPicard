@@ -19,4 +19,10 @@ public interface IRobot
     int getY();
     void setX(int x);
     void setY(int y);
+
+    void setAttack(Class classe);
+
+    void setGraphic(Class classe);
+
+    void setMove(Class classe);
 }

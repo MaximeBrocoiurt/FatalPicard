@@ -1,10 +1,11 @@
 package plugins.graphic;
 
+import identity.IGraphic;
 import identity.IRobot;
 
 import java.awt.*;
 
-public class HealthBarGraphic extends BaseGraphic
+public class HealthBarGraphic extends BaseGraphic implements IGraphic
 {
     private static final int BASE_WIDTH = 10;
 

@@ -38,23 +38,28 @@ public class Robot implements IRobot
         this.y = y;
         this.pl=pl;
 
-        Random r = new Random();
-        try {
-            this.attack = r.nextInt(2) < 1 ?
-                    (IAttack) pl.chercherClass("SmallRangeAtttack").newInstance() :
-                    (IAttack) pl.chercherClass("LongRangeAtttack").newInstance();
-            this.move = r.nextInt(3) < 1 ? (IMove) pl.chercherClass("HugMove").newInstance() : r.nextInt(2) < 1 ? (IMove) pl.chercherClass("SchwarzeneggerMove").newInstance() : (IMove) pl.chercherClass("RandomMove").newInstance();
-            this.drawRobot = r.nextInt(2) < 1 ? (IGraphic) pl.chercherClass("BaseGraphic").newInstance() : (IGraphic) pl.chercherClass("HealthBarGraphic").newInstance();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            e.getCause();
-            e.getMessage();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            e.getCause();
-        }
+//        Random r = new Random();
+//        try {
+//            this.attack = loadAttack(); //(IAttack) pl.chercherClass("SmallRangeAtttack").newInstance() ;
+//            this.move =  loadMove();//(IMove) pl.chercherClass("SchwarzeneggerMove").newInstance() ;
+//            this.drawRobot = loadGraphic();//(IGraphic) pl.chercherClass("HealthBarGraphic").newInstance();
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//            e.getCause();
+//            e.getMessage();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//            e.getCause();
+//        }
+    }
+
+    private IAttack loadAttack() {
+        //TODO On cherche la méthode annoté avec le classLoader
+       // Class classAttack=pl.chercherAttack();
+        //pl.loadFile(classAttack.getSimpleName());
+        return null;
     }
 
     /**
@@ -63,7 +68,9 @@ public class Robot implements IRobot
      */
     public void draw(Graphics g)
     {
-        drawRobot.draw(this, g);
+        if(drawRobot!=null) {
+            drawRobot.draw(this, g);
+        }
     }
 
     /**
@@ -72,7 +79,9 @@ public class Robot implements IRobot
      */
     public void move(ArrayList<IRobot> robots)
     {
-        move.move(this, robots);
+        if(move!=null) {
+            move.move(this, robots);
+        }
     }
 
     /**
@@ -82,7 +91,9 @@ public class Robot implements IRobot
     @Override
     public void attack(IRobot target) throws Exception
     {
-        attack.attack(this, target);
+        if(attack!=null) {
+            attack.attack(this, target);
+        }
     }
 
     /**
@@ -139,6 +150,39 @@ public class Robot implements IRobot
     public void setY(int y)
     {
         this.y = y;
+    }
+
+    @Override
+    public void setAttack(Class classe) {
+        try {
+            this.attack=(IAttack)classe.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setGraphic(Class classe) {
+        try {
+            this.drawRobot=(IGraphic)classe.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setMove(Class classe) {
+        try {
+            this.move=(IMove)classe.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
