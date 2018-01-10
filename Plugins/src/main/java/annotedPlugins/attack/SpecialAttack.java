@@ -1,10 +1,13 @@
-package plugins.attack;
+package annotedPlugins.attack;
 
+import annotations.Attack;
+import annotations.Plugin;
+import annotedPlugins.attack.exceptions.NotEnoughEnergyException;
+import annotedPlugins.attack.exceptions.NotInRangeException;
 import identity.IRobot;
-import plugins.attack.exceptions.NotEnoughEnergyException;
-import plugins.attack.exceptions.NotInRangeException;
 
-public class LongRangeAtttack implements IAttack
+@Plugin(type = Plugin.Type.ATTACK)
+public class SpecialAttack
 {
     private final int ENERGY_REQUIRED = 20;
     private final int RANGE = 100;
@@ -16,7 +19,7 @@ public class LongRangeAtttack implements IAttack
      * @throws NotEnoughEnergyException lorsqu’il n’y a pas assez d’énergie pour attaquer.
      * @throws NotInRangeException lorsque le robot ennemi n’est pas à portée.
      */
-    @Override
+    @Attack(nature = Attack.Nature.MAIN)
     public void attack(IRobot me, IRobot target) throws NotEnoughEnergyException, NotInRangeException
     {
         if(me.getEnergy() > ENERGY_REQUIRED)
@@ -33,13 +36,13 @@ public class LongRangeAtttack implements IAttack
         }
     }
 
-    @Override
+    @Attack(nature = Attack.Nature.POWER)
     public int getPower()
     {
         return this.POWER;
     }
 
-    @Override
+    @Attack(nature = Attack.Nature.RANGE)
     public int getRange()
     {
         return this.RANGE;

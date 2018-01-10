@@ -1,15 +1,18 @@
 package annotedPlugins.move;
 
-import identity.IMove;
+import annotations.Move;
+import annotations.Plugin;
 import identity.IRobot;
 
 import java.util.ArrayList;
 
-public class SchwarzeneggerMove implements IMove
+@Plugin(type = Plugin.Type.MOVE)
+public class SchwarzeneggerMove
 {
     private static final int DISTANCE = 5;
     private static final int ENERGY_CONSUMED = 10;
-    @Override
+
+    @Move(nature = Move.Nature.MAIN)
     public void move(IRobot subject, ArrayList<IRobot> foes)
     {
         IRobot closer = findCloser(subject, foes);

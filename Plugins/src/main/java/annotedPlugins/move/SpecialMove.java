@@ -7,10 +7,10 @@ import identity.IRobot;
 import java.util.ArrayList;
 
 @Plugin(type = Plugin.Type.MOVE)
-public class HugMove
+public class SpecialMove
 {
     private static final int DISTANCE = 5;
-    private static final int ENERGY_CONSUMED = 5;
+    private static final int ENERGY_CONSUMED = 10;
 
     @Move(nature = Move.Nature.MAIN)
     public void move(IRobot subject, ArrayList<IRobot> foes)
@@ -25,7 +25,10 @@ public class HugMove
         subject.decreaseEnergy(ENERGY_CONSUMED);
         try
         {
-            subject.attack(closer);
+            while (subject.getEnergy() > ENERGY_CONSUMED)
+            {
+                subject.attack(closer);
+            }
         } catch (Exception e) { }
     }
 

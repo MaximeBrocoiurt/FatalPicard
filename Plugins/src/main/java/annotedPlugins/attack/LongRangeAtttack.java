@@ -4,7 +4,6 @@ import annotations.Attack;
 import annotations.Plugin;
 import annotedPlugins.attack.exceptions.NotEnoughEnergyException;
 import annotedPlugins.attack.exceptions.NotInRangeException;
-import identity.IAttack;
 import identity.IRobot;
 
 @Plugin(type = Plugin.Type.ATTACK)

@@ -1,7 +1,9 @@
 package main;
 
 import engine.War;
+import identity.IRobot;
 import loader.PluginLoader;
+import processor.PluginProcessor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,16 +19,13 @@ public class Entrey
     public static void main(String[] args)
     {
         //On indique où se trouve le dossier contenant les .jar pour y chercher toutes les classes qu'ils faut charger
-        File basPathPlugin = new File(System.getProperty("user.dir") + File.separatorChar + "plugins"+ File.separatorChar + "target");
+        File basPathPlugin = new File(System.getProperty("user.dir") + File.separatorChar + "plugins" + File.separatorChar + "target");
 //        File basPathPlugin = new File(System.getProperty("user.dir") + File.separator + "plugins");
         // System.out.println("Chemin plugins " + basPathPlugin.getPath());
         PluginLoader myLoader = new PluginLoader(basPathPlugin);
         //Une fois chargé, elles sont disponible dans cette liste
         List<Class<?>> myPlugin = myLoader.load();
         //System.out.println(myPlugin);
-        for(Class classe : myPlugin){
-            System.out.println("Classes chargées du plugin : "+classe.getName());
-        }
 
         JFrame f = new JFrame("RobotWar");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,15 +45,22 @@ public class Entrey
         addItemMenu(menuAttack);
         addListener(menuAttack);
 
+        War w = new War(500, 500, 10, myLoader);
+        for(IRobot r : w.getRobots())
+        {
+            r.setAttack(myLoader.chercherClass("SpecialAtttack"));
+            r.setGraphic(myLoader.chercherClass("SpecialGraphic"));
+            r.setMove(myLoader.chercherClass("SpecialMove"));
+        }
+        
         f.getContentPane().add(menu, BorderLayout.NORTH);
-
-        War w = new War(500, 500, 10,myLoader);
         f.getContentPane().add(w, BorderLayout.CENTER);
         f.getContentPane().add(start, BorderLayout.SOUTH);
 
         start.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 w.launch();
             }
         });

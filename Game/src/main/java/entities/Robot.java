@@ -1,14 +1,12 @@
 package entities;
 
-import engine.War;
-import identity.IAttack;
-import identity.IGraphic;
-import identity.IMove;
+import annotations.Attack;
 import identity.IRobot;
 import loader.PluginLoader;
 
 
 import java.awt.*;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,9 +18,9 @@ public class Robot implements IRobot
     private PluginLoader pl;
     private int life, energy;
     private int x, y;
-    private IAttack attack;
-    private IMove move;
-    private IGraphic drawRobot;
+    private Class<?> attack;
+    private Class<?> move;
+    private Class<?> drawRobot;
 
     /**
      * Constructeur.
@@ -41,20 +39,20 @@ public class Robot implements IRobot
         Random r = new Random();
         System.out.println(r);
         try {
-            this.attack = r.nextInt(2) < 1 ?
-                    (IAttack) pl.chercherClass("SmallRangeAtttack").newInstance() :
-                    (IAttack) pl.chercherClass("LongRangeAtttack").newInstance();
-            this.move = r.nextInt(3) < 1 ? (IMove) pl.chercherClass("HugMove").newInstance() : r.nextInt(2) < 1 ? (IMove) pl.chercherClass("SchwarzeneggerMove").newInstance() : (IMove) pl.chercherClass("RandomMove").newInstance();
-            this.drawRobot = r.nextInt(2) < 1 ? (IGraphic) pl.chercherClass("BaseGraphic").newInstance() : (IGraphic) pl.chercherClass("HealthBarGraphic").newInstance();
+//            this.attack = r.nextInt(2) < 1 ?
+//                    (IAttack) pl.chercherClass("SmallRangeAtttack").newInstance() :
+//                    (IAttack) pl.chercherClass("LongRangeAtttack").newInstance();
+//            this.move = r.nextInt(3) < 1 ? (IMove) pl.chercherClass("HugMove").newInstance() : r.nextInt(2) < 1 ? (IMove) pl.chercherClass("SchwarzeneggerMove").newInstance() : (IMove) pl.chercherClass("RandomMove").newInstance();
+//            this.drawRobot = r.nextInt(2) < 1 ? (IGraphic) pl.chercherClass("BaseGraphic").newInstance() : (IGraphic) pl.chercherClass("HealthBarGraphic").newInstance();
         } catch (NullPointerException e) {
             e.printStackTrace();
             e.getCause();
             e.getMessage();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            e.getCause();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//            e.getCause();
         }
     }
 
@@ -62,18 +60,40 @@ public class Robot implements IRobot
      * Permet au robot de se dessiner.
      * @param g espace graphique sur lequel il doit se dessiner.
      */
-    public void draw(Graphics g)
+    public void draw(Graphics g) throws Exception
     {
-        drawRobot.draw(this, g);
+        if(drawRobot != null)
+        {
+            for(Method m : attack.getDeclaredMethods())
+            {
+                if(m.getDeclaredAnnotation(Attack.class).nature() == Attack.Nature.MAIN)
+                {
+                    Object instance = attack.newInstance();
+                    System.out.println("TA MERE LA GROSSE CHIENNE ");
+                    m.invoke(instance,g);
+                }
+            }
+        }
     }
 
     /**
      * Demande au robot d’effectuer un mouvement.
      * @param robots
      */
-    public void move(ArrayList<IRobot> robots)
+    public void move(ArrayList<IRobot> robots) throws Exception
     {
-        move.move(this, robots);
+        if(move != null)
+        {
+            for(Method m : attack.getDeclaredMethods())
+            {
+                if(m.getDeclaredAnnotation(Attack.class).nature() == Attack.Nature.MAIN)
+                {
+                    Object instance = attack.newInstance();
+                    System.out.println("TA MERE LA GROSSE CHIENNE ");
+                    m.invoke(instance,this, robots);
+                }
+            }
+        }
     }
 
     /**
@@ -83,14 +103,25 @@ public class Robot implements IRobot
     @Override
     public void attack(IRobot target) throws Exception
     {
-        attack.attack(this, target);
+        if(attack != null)
+        {
+            for(Method m : attack.getDeclaredMethods())
+            {
+                if(m.getDeclaredAnnotation(Attack.class).nature() == Attack.Nature.MAIN)
+                {
+                    Object instance = attack.newInstance();
+                    System.out.println("TA MERE LA GROSSE CHIENNE ");
+                    m.invoke(instance,this, target);
+                }
+            }
+        }
     }
 
     /**
      * Demande au robot de faire quelque chose.
      * @param robots liste des ennemis.
      */
-    public void act(ArrayList<IRobot> robots)
+    public void act(ArrayList<IRobot> robots) throws Exception
     {
         move(robots);
     }
@@ -174,7 +205,19 @@ public class Robot implements IRobot
             energy = BASE_ENERGY;
     }
 
-    public void setAttack(IAttack attackSmallRange) {
-        this.attack = attackSmallRange;
+    @Override
+    public void setAttack(Class<?> o)
+    {
+        this.attack = o;
+    }
+
+    @Override
+    public void setGraphic(Class<?> attack) {
+        this.drawRobot = attack;
+    }
+
+    @Override
+    public void setMove(Class<?> attack) {
+        this.move = attack;
     }
 }

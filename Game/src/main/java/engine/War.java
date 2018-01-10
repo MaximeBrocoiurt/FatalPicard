@@ -60,7 +60,8 @@ public class War extends JPanel implements Runnable
             robots.get(i).increaseEnergy(ENERGY_REFILL);
             ennemis = new ArrayList<>(robots);
             ennemis.remove(i);
-            robots.get(i).act(ennemis);
+            try{
+            robots.get(i).act(ennemis);}catch (Exception e) {e.printStackTrace();}
             System.out.println("Le robot a agi.");
             removeDestroyedRobots();
             repaint();
@@ -113,7 +114,7 @@ public class War extends JPanel implements Runnable
         super.paint(g);
         for(IRobot r : robots)
         {
-            r.draw(g);
+            try{r.draw(g);}catch (Exception e){}
         }
     }
 }
