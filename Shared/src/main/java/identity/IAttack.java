@@ -1,7 +1,5 @@
 package identity;
 
-import identity.IRobot;
-
 public interface IAttack
 {
     int getPower();

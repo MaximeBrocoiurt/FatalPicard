@@ -1,7 +1,5 @@
 package identity;
 
-import identity.IRobot;
-
 import java.util.ArrayList;
 
 public interface IMove

@@ -1,7 +1,5 @@
 package identity;
 
-import identity.IRobot;
-
 import java.awt.*;
 
 public interface IGraphic
