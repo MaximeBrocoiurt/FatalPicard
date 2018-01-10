@@ -9,11 +9,12 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 
-public class PluginLoader {
+public  class  PluginLoader extends TimerTask {
 
     private File repBase;
 
@@ -103,7 +104,7 @@ public class PluginLoader {
                     // -6 because of .class
                     String className = je.getName().substring(0, je.getName().length() - 6);
                     className = className.replace('/', '.');
-                    System.out.println("LCAS "+className);
+                   // System.out.println("LCAS "+className);
                     Class c = cl.loadClass(className);
 
                     listFoundClasses.add(c);
@@ -114,7 +115,7 @@ public class PluginLoader {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (NullPointerException e) {
-                System.out.println("Le probleme est ici");
+              //System.out.println("Le probleme est ici");
                 e.printStackTrace();
                 e.getMessage();
                 e.getCause();
@@ -133,7 +134,7 @@ public class PluginLoader {
     }
 
     public Class chercherClass(String name){
-        System.out.println("ON recherche : "+name);
+      //  System.out.println("ON recherche : "+name);
         for(Class clasz : this.listClasses){
             //  System.out.println("Class.getName : "+clasz.getName());
             if(clasz.getName().contains(name)){
@@ -143,4 +144,9 @@ public class PluginLoader {
         return null;
     }
 
+    @Override
+    public void run() {
+        System.out.println("Recharge des plugins");
+        listClasses=this.load();
+    }
 }

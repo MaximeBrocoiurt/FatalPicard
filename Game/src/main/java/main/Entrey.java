@@ -9,8 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
+import java.util.Timer;
 
-import static java.lang.System.exit;
 
 public class Entrey
 {
@@ -21,9 +21,10 @@ public class Entrey
         // System.out.println("Chemin plugins " + basPathPlugin.getPath());
         PluginLoader myLoader = new PluginLoader(basPathPlugin);
         //Une fois chargé, elles sont disponible dans cette liste
-        List<Class<?>> myPlugin = myLoader.load();
+
+
         //System.out.println(myPlugin);
-        for(Class classe : myPlugin){
+        for(Class classe : myLoader.getListClasses()){
             System.out.println("Classes chargées du plugin : "+classe.getName());
         }
 
@@ -37,23 +38,43 @@ public class Entrey
         JMenu menuMove = new JMenu("IMove");
         JMenu menuGraphique = new JMenu("IGraphique");
 
+
         menu.add(menuAttack);
         menu.add(menuMove);
         menu.add(menuGraphique);
 
-        //TODO: item à mettre dans le menu avec les classes chargé
-        addItemMenu(menuAttack);
-        addListener(menuAttack);
+        for(Class classe : myLoader.getListClasses()){
+           // System.out.println("Classes chargées du plugin : "+classe.getName());
+            Class[] interfaces=classe.getInterfaces();
+            for(int i=0;i<interfaces.length;i++){
+                if(interfaces[i].getName().contains("IGraphic")) {
+                    addItemMenu(menuGraphique, classe.getSimpleName());
+                }
+                if(interfaces[i].getName().contains("IAttack")) {
+                    addItemMenu(menuAttack,  classe.getSimpleName());
+                }
+                if(interfaces[i].getName().contains("IMove")) {
+                    addItemMenu(menuMove,  classe.getSimpleName());
+                }
+               // System.out.println(interfaces[i].getName());
+            }
+
+        }
+
 
         f.getContentPane().add(menu, BorderLayout.NORTH);
 
         War w = new War(500, 500, 10,myLoader);
+
+
         f.getContentPane().add(w, BorderLayout.CENTER);
         f.getContentPane().add(start, BorderLayout.SOUTH);
 
         start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Timer timer= new Timer();
+                timer.schedule(new PluginLoader(basPathPlugin), 0, 5000);
                 w.launch();
             }
         });
@@ -66,8 +87,8 @@ public class Entrey
      * Method for add item in menu passed in parameters
      * @param menu
      */
-    private static void addItemMenu(JMenu menu) {
-        JMenuItem newMenu = new JMenuItem("test");
+    private static void addItemMenu(JMenu menu, String message) {
+        JMenuItem newMenu = new JMenuItem(message);
         menu.add(newMenu);
     }
 

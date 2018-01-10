@@ -39,7 +39,6 @@ public class Robot implements IRobot
         this.pl=pl;
 
         Random r = new Random();
-        System.out.println(r);
         try {
             this.attack = r.nextInt(2) < 1 ?
                     (IAttack) pl.chercherClass("SmallRangeAtttack").newInstance() :
