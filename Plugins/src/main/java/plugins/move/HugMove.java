@@ -1,15 +1,23 @@
 package plugins.move;
 
+import annotations.Move;
+import annotations.Plugin;
+import exceptions.NotEnoughEnergyException;
+import exceptions.NotInRangeException;
 import identity.IRobot;
+import identity.exceptions.NoPluginException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
-public class HugMove implements IMove
+@Plugin(type = Plugin.Type.MOVE)
+public class HugMove
 {
     private static final int DISTANCE = 5;
     private static final int ENERGY_CONSUMED = 5;
-    @Override
-    public void move(IRobot subject, ArrayList<IRobot> foes)
+
+    @Move(nature = Move.Nature.MAIN)
+    public void move(IRobot subject, ArrayList<IRobot> foes) throws IllegalAccessException, InstantiationException, InvocationTargetException
     {
         IRobot closer = findCloser(subject, foes);
         int distance = closer.calculateDistance(subject);
@@ -18,11 +26,8 @@ public class HugMove implements IMove
             subject.setX((DISTANCE * (closer.getX() - subject.getX())) / distance + subject.getX());
             subject.setY((DISTANCE * (closer.getY() - subject.getY())) / distance + subject.getY());
         }
-        subject.decreaseEnergy(ENERGY_CONSUMED);
-        try
-        {
-            subject.attack(closer);
-        } catch (Exception e) { }
+        try {subject.decreaseEnergy(ENERGY_CONSUMED);}catch (Exception e){}
+        subject.attack(closer);
     }
 
     /**

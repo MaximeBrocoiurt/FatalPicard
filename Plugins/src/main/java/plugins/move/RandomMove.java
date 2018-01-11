@@ -1,15 +1,19 @@
 package plugins.move;
 
+import annotations.Move;
+import annotations.Plugin;
 import identity.IRobot;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class RandomMove implements IMove
+@Plugin(type = Plugin.Type.MOVE)
+public class RandomMove
 {
     private static final int DISTANCE = 5;
     private static final int ENERGY_CONSUMED = 5;
-    @Override
+
+    @Move(nature = Move.Nature.MAIN)
     public void move(IRobot subject, ArrayList<IRobot> foes)
     {
         IRobot closer = foes.get(new Random().nextInt(foes.size()));
@@ -19,11 +23,11 @@ public class RandomMove implements IMove
             subject.setX((DISTANCE * (closer.getX() - subject.getX())) / distance + subject.getX());
             subject.setY((DISTANCE * (closer.getY() - subject.getY())) / distance + subject.getY());
         }
-        subject.decreaseEnergy(ENERGY_CONSUMED);
+        try {subject.decreaseEnergy(ENERGY_CONSUMED);}catch (Exception e){}
         try
         {
             subject.attack(closer);
-        } catch (Exception e) { }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     /**

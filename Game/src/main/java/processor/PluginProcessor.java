@@ -1,40 +1,51 @@
 package processor;
 
-import annotations.Attack;
-import annotations.Plugin;
-import identity.IRobot;
+import entities.Tuple;
+import loader.PluginLoader;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 /**
  * sert à interpréter les plugins après leur chargement
  */
 public class PluginProcessor
 {
-    public static void test(Class<?> test, ArrayList<IRobot> robotArrayList) throws Exception
+    private PluginLoader pluginLoader;
+
+    public PluginProcessor(PluginLoader pluginLoader)
     {
-        System.out.print(test.getCanonicalName() +" ");
-        if(test.getAnnotation(Plugin.class) == null)
+        this.pluginLoader = pluginLoader;
+    }
+
+    public void executeMethod(Tuple<?> tuple, Enum annotationEnum, Object... args) throws InvocationTargetException
+    {
+        try
         {
-            System.out.println("va niquer ta mère");
-        } else
-        {
-            switch(test.getAnnotation(Plugin.class).type())
-            {
-                case ATTACK:
-                    System.out.println("watahshi ha attack da");
-
-                    break;
-                case GRAPHIC:
-                    System.out.println("watahshi ha graphic da");
-
-                    break;
-                case MOVE:
-                    System.out.println("watahshi ha move da");
-                    break;
-            }
-
+            findMethod(tuple.type, annotationEnum).invoke(tuple.instance, args);
         }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public Method findMethod(Class<?> c, Enum<?> annotationEnum)
+    {
+        for(Method m : c.getDeclaredMethods())
+        {
+            for(Annotation a : m.getDeclaredAnnotations())
+            {
+                if(a.annotationType().getCanonicalName().equals(annotationEnum.getClass().getCanonicalName().substring(0, annotationEnum.getClass().getCanonicalName().lastIndexOf("."))))
+                {
+                    if(a.toString().contains(annotationEnum.toString()))
+                    {
+                        return m;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

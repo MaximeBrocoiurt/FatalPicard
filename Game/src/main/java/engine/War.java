@@ -2,7 +2,7 @@ package engine;
 
 import identity.IRobot;
 import entities.Robot;
-import loader.PluginLoader;
+import processor.PluginProcessor;
 
 
 import javax.swing.*;
@@ -21,7 +21,7 @@ public class War extends JPanel implements Runnable
 
     private ArrayList<IRobot> robots;
     private Thread thread;
-    private PluginLoader pl;
+    private PluginProcessor pluginProcessor;
 
     /**
      * Constructeur. DUH.
@@ -29,9 +29,9 @@ public class War extends JPanel implements Runnable
      * @param height height du terrain, en pixels
      * @param number number de robots à générer
      */
-    public War(int width, int height, int number, PluginLoader pl)
+    public War(int width, int height, int number, PluginProcessor pluginProcessor)
     {
-        this.pl=pl;
+        this.pluginProcessor = pluginProcessor;
         setPreferredSize(new Dimension(width, height));
         generateRobots(number, width, height);
     }
@@ -60,8 +60,8 @@ public class War extends JPanel implements Runnable
             robots.get(i).increaseEnergy(ENERGY_REFILL);
             ennemis = new ArrayList<>(robots);
             ennemis.remove(i);
-            try{
-            robots.get(i).act(ennemis);}catch (Exception e) {e.printStackTrace();}
+            try{robots.get(i).move(ennemis);}
+            catch (Exception e) {e.printStackTrace();}
             System.out.println("Le robot a agi.");
             removeDestroyedRobots();
             repaint();
@@ -92,7 +92,7 @@ public class War extends JPanel implements Runnable
         Random r = new Random();
         for(int i = 0; i < number; i++)
         {
-            robots.add(new Robot(r.nextInt(width), r.nextInt(height), this.pl));
+            robots.add(new Robot(r.nextInt(width), r.nextInt(height), pluginProcessor));
         }
     }
 

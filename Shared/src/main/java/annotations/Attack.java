@@ -8,5 +8,5 @@ public @interface Attack
 {
     Nature nature();
 
-    enum Nature{MAIN, RANGE, POWER}
+    enum Nature{MAIN, RANGE, POWER, CONSUMPTION}
 }

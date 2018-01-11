@@ -1,4 +1,4 @@
-package annotedPlugins.graphic;
+package plugins.graphic;
 
 import annotations.Graphic;
 import annotations.Plugin;
@@ -7,11 +7,11 @@ import identity.IRobot;
 import java.awt.*;
 
 @Plugin(type = Plugin.Type.GRAPHIC)
-public class HealthBarGraphic extends BaseGraphic
+public class SpecialGraphic extends BaseGraphic
 {
     private static final int BASE_WIDTH = 10;
 
-    public HealthBarGraphic()
+    public SpecialGraphic()
     {
         super();
     }

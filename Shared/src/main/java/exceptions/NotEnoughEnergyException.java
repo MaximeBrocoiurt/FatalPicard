@@ -1,11 +1,11 @@
-package annotedPlugins.attack.exceptions;
+package exceptions;
 
-public class NotInRangeException extends Exception
+public class NotEnoughEnergyException extends Exception
 {
     /**
      * Constructs a new exception
      */
-    public NotInRangeException()
+    public NotEnoughEnergyException()
     {
         super();
     }
@@ -14,7 +14,7 @@ public class NotInRangeException extends Exception
      * Construit une nouvelle exception avec un message personnalisé;.
      * @param message message personnalisé pour cette exception.
      */
-    public NotInRangeException(String message)
+    public NotEnoughEnergyException(String message)
     {
         super(message);
     }
@@ -24,7 +24,7 @@ public class NotInRangeException extends Exception
      * @param message nouveau message
      * @param cause ancienne exception à propager
      */
-    public NotInRangeException(String message, Throwable cause)
+    public NotEnoughEnergyException(String message, Throwable cause)
     {
         super(message, cause);
     }
@@ -33,7 +33,7 @@ public class NotInRangeException extends Exception
      * Construit une nouvelle exception à partir d’une autre.
      * @param cause ancienne exception à propager.
      */
-    public NotInRangeException(Throwable cause)
+    public NotEnoughEnergyException(Throwable cause)
     {
         super(cause);
     }

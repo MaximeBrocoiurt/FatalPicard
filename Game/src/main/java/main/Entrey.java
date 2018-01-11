@@ -1,5 +1,6 @@
 package main;
 
+import annotations.Attack;
 import engine.War;
 import identity.IRobot;
 import loader.PluginLoader;
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 import static java.lang.System.exit;
@@ -21,11 +23,15 @@ public class Entrey
         //On indique où se trouve le dossier contenant les .jar pour y chercher toutes les classes qu'ils faut charger
         File basPathPlugin = new File(System.getProperty("user.dir") + File.separatorChar + "plugins" + File.separatorChar + "target");
 //        File basPathPlugin = new File(System.getProperty("user.dir") + File.separator + "plugins");
-        // System.out.println("Chemin plugins " + basPathPlugin.getPath());
+
+
         PluginLoader myLoader = new PluginLoader(basPathPlugin);
         //Une fois chargé, elles sont disponible dans cette liste
         List<Class<?>> myPlugin = myLoader.load();
         //System.out.println(myPlugin);
+
+        PluginProcessor pluginProcessor = new PluginProcessor(myLoader);
+        pluginProcessor.findMethod(myLoader.chercherClass("SpecialAttack"), Attack.Nature.MAIN);
 
         JFrame f = new JFrame("RobotWar");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -45,10 +51,10 @@ public class Entrey
         addItemMenu(menuAttack);
         addListener(menuAttack);
 
-        War w = new War(500, 500, 10, myLoader);
+        War w = new War(500, 500, 2, pluginProcessor);
         for(IRobot r : w.getRobots())
         {
-            r.setAttack(myLoader.chercherClass("SpecialAtttack"));
+            r.setAttack(myLoader.chercherClass("SpecialAttack"));
             r.setGraphic(myLoader.chercherClass("SpecialGraphic"));
             r.setMove(myLoader.chercherClass("SpecialMove"));
         }

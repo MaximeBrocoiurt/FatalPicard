@@ -25,7 +25,6 @@ public class PluginLoader {
         ArrayList<File> arrayRepository = new ArrayList<File>();
         arrayRepository.add(repBase);
         this.listClasses = new ArrayList<Class<?>>();
-        System.out.println("Chargement des classes");
         listClasses=this.load();
 
     }
@@ -90,20 +89,19 @@ public class PluginLoader {
 
         for(File file : listJar) {
             JarFile jarFile = null;
+            String className = null;
             try {
                 jarFile = new JarFile(file.getPath());
 
                 Enumeration<JarEntry> e = jarFile.entries();
-
                 while (e.hasMoreElements()) {
                     JarEntry je = e.nextElement();
                     if (je.isDirectory() || !je.getName().endsWith(".class")) {
                         continue;
                     }
                     // -6 because of .class
-                    String className = je.getName().substring(0, je.getName().length() - 6);
+                    className = je.getName().substring(0, je.getName().length() - 6);
                     className = className.replace('/', '.');
-                    System.out.println("LCAS "+className);
                     Class c = cl.loadClass(className);
 
                     listFoundClasses.add(c);
@@ -114,7 +112,6 @@ public class PluginLoader {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (NullPointerException e) {
-                System.out.println("Le probleme est ici");
                 e.printStackTrace();
                 e.getMessage();
                 e.getCause();
@@ -133,7 +130,6 @@ public class PluginLoader {
     }
 
     public Class chercherClass(String name){
-        System.out.println("ON recherche : "+name);
         for(Class clasz : this.listClasses){
             //  System.out.println("Class.getName : "+clasz.getName());
             if(clasz.getName().contains(name)){

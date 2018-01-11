@@ -1,19 +1,17 @@
 package plugins.graphic;
 
+import annotations.Graphic;
+import annotations.Plugin;
 import identity.IRobot;
 
 import java.awt.*;
 import java.util.Random;
 
-public class BaseGraphic implements IGraphic
+@Plugin(type = Plugin.Type.GRAPHIC)
+public class BaseGraphic
 {
-    private Color c;
+    private Color c = randomColor();
     private static final int BASE_WIDTH = 10;
-
-    public BaseGraphic()
-    {
-        c = randomColor();
-    }
 
     private Color randomColor()
     {
@@ -24,7 +22,7 @@ public class BaseGraphic implements IGraphic
         return new Color(r, g, b);
     }
 
-    @Override
+    @Graphic(nature = Graphic.Nature.MAIN)
     public void draw(IRobot subject, Graphics g)
     {
         g.setColor(c);

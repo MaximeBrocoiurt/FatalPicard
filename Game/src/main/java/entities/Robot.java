@@ -1,99 +1,46 @@
 package entities;
 
 import annotations.Attack;
+import annotations.Graphic;
+import annotations.Move;
+import exceptions.NotEnoughEnergyException;
+import exceptions.NotInRangeException;
 import identity.IRobot;
-import loader.PluginLoader;
+import processor.PluginProcessor;
 
 
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Robot implements IRobot
 {
     private static final int BASE_LIFE = 100, BASE_ENERGY = 100;
     private static final int BASE_DISTANCE = 5;
 
-    private PluginLoader pl;
+    private PluginProcessor pluginProcessor;
     private int life, energy;
     private int x, y;
-    private Class<?> attack;
-    private Class<?> move;
-    private Class<?> drawRobot;
+    private Tuple<?> attack;
+    private Tuple<?> move;
+    private Tuple<?> graphic;
 
     /**
      * Constructeur.
      * @param x position en absisses du robot
      * @param y position en ordonnées du robot
-     *
+     * @param pluginProcessor
      */
-    //TODO examiner l’intéret de fournir war en paramètre
-    public Robot(int x, int y, PluginLoader pl) {
+    public Robot(int x, int y, PluginProcessor pluginProcessor)
+    {
         this.life = BASE_LIFE;
         this.energy = BASE_ENERGY;
         this.x = x;
         this.y = y;
-        this.pl=pl;
-
-        Random r = new Random();
-        System.out.println(r);
-        try {
-//            this.attack = r.nextInt(2) < 1 ?
-//                    (IAttack) pl.chercherClass("SmallRangeAtttack").newInstance() :
-//                    (IAttack) pl.chercherClass("LongRangeAtttack").newInstance();
-//            this.move = r.nextInt(3) < 1 ? (IMove) pl.chercherClass("HugMove").newInstance() : r.nextInt(2) < 1 ? (IMove) pl.chercherClass("SchwarzeneggerMove").newInstance() : (IMove) pl.chercherClass("RandomMove").newInstance();
-//            this.drawRobot = r.nextInt(2) < 1 ? (IGraphic) pl.chercherClass("BaseGraphic").newInstance() : (IGraphic) pl.chercherClass("HealthBarGraphic").newInstance();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            e.getCause();
-            e.getMessage();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//            e.getCause();
-        }
-    }
-
-    /**
-     * Permet au robot de se dessiner.
-     * @param g espace graphique sur lequel il doit se dessiner.
-     */
-    public void draw(Graphics g) throws Exception
-    {
-        if(drawRobot != null)
-        {
-            for(Method m : attack.getDeclaredMethods())
-            {
-                if(m.getDeclaredAnnotation(Attack.class).nature() == Attack.Nature.MAIN)
-                {
-                    Object instance = attack.newInstance();
-                    System.out.println("TA MERE LA GROSSE CHIENNE ");
-                    m.invoke(instance,g);
-                }
-            }
-        }
-    }
-
-    /**
-     * Demande au robot d’effectuer un mouvement.
-     * @param robots
-     */
-    public void move(ArrayList<IRobot> robots) throws Exception
-    {
-        if(move != null)
-        {
-            for(Method m : attack.getDeclaredMethods())
-            {
-                if(m.getDeclaredAnnotation(Attack.class).nature() == Attack.Nature.MAIN)
-                {
-                    Object instance = attack.newInstance();
-                    System.out.println("TA MERE LA GROSSE CHIENNE ");
-                    m.invoke(instance,this, robots);
-                }
-            }
-        }
+        this.pluginProcessor = pluginProcessor;
     }
 
     /**
@@ -101,29 +48,62 @@ public class Robot implements IRobot
      * @param target
      */
     @Override
-    public void attack(IRobot target) throws Exception
+    public void attack(IRobot target) throws InvocationTargetException
     {
         if(attack != null)
         {
-            for(Method m : attack.getDeclaredMethods())
+            try
             {
-                if(m.getDeclaredAnnotation(Attack.class).nature() == Attack.Nature.MAIN)
+                pluginProcessor.executeMethod(attack, Attack.Nature.MAIN, this, target);
+            }
+            catch (InvocationTargetException e)
+            {
+                if(e.getCause().getClass() == NotEnoughEnergyException.class)
                 {
-                    Object instance = attack.newInstance();
-                    System.out.println("TA MERE LA GROSSE CHIENNE ");
-                    m.invoke(instance,this, target);
+                    System.out.println("Je suis à sec");
+                }
+                else if(e.getCause().getClass() == NotInRangeException.class)
+                {
+                    System.out.println("Je suis trop loin");
+                }
+                else
+                {
+                    throw new InvocationTargetException(e);
                 }
             }
         }
     }
 
     /**
-     * Demande au robot de faire quelque chose.
-     * @param robots liste des ennemis.
+     * Permet au robot de se dessiner.
+     * @param g espace graphique sur lequel il doit se dessiner.
      */
-    public void act(ArrayList<IRobot> robots) throws Exception
+    @Override
+    public void draw(Graphics g)
     {
-        move(robots);
+        if(graphic != null)
+        {
+            try
+            {
+                pluginProcessor.executeMethod(graphic, Graphic.Nature.MAIN, g);
+            } catch (Exception e) {}
+        }
+    }
+
+    /**
+     * Demande au robot d’effectuer un mouvement.
+     * @param robots
+     */
+    @Override
+    public void move(ArrayList<IRobot> robots)
+    {
+        if(move != null)
+        {
+            try
+            {
+                pluginProcessor.executeMethod(move,  Move.Nature.MAIN, this, robots);
+            } catch (Exception e) {}
+        }
     }
 
     /**
@@ -206,18 +186,43 @@ public class Robot implements IRobot
     }
 
     @Override
-    public void setAttack(Class<?> o)
+    public void setAttack(Class<?> c)
     {
-        this.attack = o;
+        try
+        {
+            this.attack = new Tuple<>(c);
+        } catch (Exception e) {}
     }
 
     @Override
-    public void setGraphic(Class<?> attack) {
-        this.drawRobot = attack;
+    public void setGraphic(Class<?> c)
+    {
+        try
+        {
+            this.graphic = new Tuple<>(c);
+        } catch (Exception e) {}
     }
 
     @Override
-    public void setMove(Class<?> attack) {
-        this.move = attack;
+    public void setMove(Class<?> c) {
+        try
+        {
+            this.move = new Tuple<>(c);
+        } catch (Exception e) {}
+    }
+
+    @Override
+    public Object getAttack() {
+        return attack;
+    }
+
+    @Override
+    public Object getGraphic() {
+        return graphic;
+    }
+
+    @Override
+    public Object getMove() {
+        return move;
     }
 }

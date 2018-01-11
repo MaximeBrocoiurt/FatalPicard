@@ -1,15 +1,16 @@
-package annotedPlugins.attack;
+package plugins.attack;
 
 import annotations.Attack;
 import annotations.Plugin;
-import annotedPlugins.attack.exceptions.NotEnoughEnergyException;
-import annotedPlugins.attack.exceptions.NotInRangeException;
+import exceptions.NotEnoughEnergyException;
+import exceptions.NotInRangeException;
 import identity.IRobot;
+import identity.exceptions.NoPluginException;
 
 @Plugin(type = Plugin.Type.ATTACK)
-public class LongRangeAtttack
+public class SpecialAttack
 {
-    private final int ENERGY_REQUIRED = 20;
+    private final int ENERGY_CONSUMPTION = 20;
     private final int RANGE = 100;
     private final int POWER = 5;
 
@@ -20,14 +21,14 @@ public class LongRangeAtttack
      * @throws NotInRangeException lorsque le robot ennemi n’est pas à portée.
      */
     @Attack(nature = Attack.Nature.MAIN)
-    public void attack(IRobot me, IRobot target) throws NotEnoughEnergyException, NotInRangeException
+    public void attack(IRobot me, IRobot target) throws NotInRangeException, NotEnoughEnergyException
     {
-        if(me.getEnergy() > ENERGY_REQUIRED)
+        if(me.getEnergy() >= ENERGY_CONSUMPTION)
         {
             if(me.calculateDistance(target) <= RANGE)
             {
                 target.decreaseLife(POWER);
-                me.decreaseEnergy(POWER);
+                me.decreaseEnergy(ENERGY_CONSUMPTION);
             } else {
                 throw new NotInRangeException();
             }
@@ -46,5 +47,11 @@ public class LongRangeAtttack
     public int getRange()
     {
         return this.RANGE;
+    }
+
+    @Attack(nature = Attack.Nature.CONSUMPTION)
+    public int getEnergyConsumption()
+    {
+        return this.ENERGY_CONSUMPTION;
     }
 }

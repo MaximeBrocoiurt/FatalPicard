@@ -1,9 +1,12 @@
 package plugins.graphic;
 
+import annotations.Graphic;
+import annotations.Plugin;
 import identity.IRobot;
 
 import java.awt.*;
 
+@Plugin(type = Plugin.Type.GRAPHIC)
 public class HealthBarGraphic extends BaseGraphic
 {
     private static final int BASE_WIDTH = 10;
@@ -13,7 +16,7 @@ public class HealthBarGraphic extends BaseGraphic
         super();
     }
 
-    @Override
+    @Graphic(nature = Graphic.Nature.MAIN)
     public void draw(IRobot subject, Graphics g)
     {
         super.draw(subject, g);
