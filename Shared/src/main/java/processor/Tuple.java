@@ -1,4 +1,4 @@
-package entities;
+package processor;
 
 
 public class Tuple<T>

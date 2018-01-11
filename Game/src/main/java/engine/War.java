@@ -114,7 +114,14 @@ public class War extends JPanel implements Runnable
         super.paint(g);
         for(IRobot r : robots)
         {
-            try{r.draw(g);}catch (Exception e){}
+            try
+            {
+                r.draw(g);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 }

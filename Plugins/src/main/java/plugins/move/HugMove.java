@@ -17,8 +17,9 @@ public class HugMove
     private static final int ENERGY_CONSUMED = 5;
 
     @Move(nature = Move.Nature.MAIN)
-    public void move(IRobot subject, ArrayList<IRobot> foes) throws IllegalAccessException, InstantiationException, InvocationTargetException
+    public void move(IRobot subject, ArrayList<IRobot> foes) throws NotEnoughEnergyException, InvocationTargetException
     {
+        subject.decreaseEnergy(ENERGY_CONSUMED);
         IRobot closer = findCloser(subject, foes);
         int distance = closer.calculateDistance(subject);
         if(distance != 0)
@@ -26,8 +27,14 @@ public class HugMove
             subject.setX((DISTANCE * (closer.getX() - subject.getX())) / distance + subject.getX());
             subject.setY((DISTANCE * (closer.getY() - subject.getY())) / distance + subject.getY());
         }
-        try {subject.decreaseEnergy(ENERGY_CONSUMED);}catch (Exception e){}
-        subject.attack(closer);
+        try
+        {
+            subject.attack(closer);
+        }
+        catch (InvocationTargetException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -35,7 +42,7 @@ public class HugMove
      * @param robots liste des robots
      * @return robot le plus proche
      */
-    private IRobot findCloser(IRobot subject, ArrayList<IRobot> robots)
+    protected IRobot findCloser(IRobot subject, ArrayList<IRobot> robots)
     {
         IRobot closer = null;
         int minimalDistance = Integer.MAX_VALUE, tampon;

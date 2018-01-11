@@ -1,8 +1,6 @@
 package identity;
 
 import exceptions.NotEnoughEnergyException;
-import exceptions.NotInRangeException;
-import identity.exceptions.NoPluginException;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
@@ -10,9 +8,9 @@ import java.util.ArrayList;
 
 public interface IRobot
 {
-    void move(ArrayList<IRobot> foes) throws IllegalAccessException, InvocationTargetException, InstantiationException;
-    void draw(Graphics g) throws IllegalAccessException, InvocationTargetException, InstantiationException;
-    void attack(IRobot target) throws IllegalAccessException, InvocationTargetException, InstantiationException;
+    void move(ArrayList<IRobot> foes) throws InvocationTargetException;
+    void draw(Graphics g) throws InvocationTargetException;
+    void attack(IRobot target) throws InvocationTargetException;
     int calculateDistance(IRobot robot);
     void decreaseLife(int amount);
     void increaseLife(int amount);

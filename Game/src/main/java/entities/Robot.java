@@ -7,14 +7,12 @@ import exceptions.NotEnoughEnergyException;
 import exceptions.NotInRangeException;
 import identity.IRobot;
 import processor.PluginProcessor;
+import processor.Tuple;
 
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class Robot implements IRobot
 {
@@ -60,11 +58,11 @@ public class Robot implements IRobot
             {
                 if(e.getCause().getClass() == NotEnoughEnergyException.class)
                 {
-                    System.out.println("Je suis à sec");
+                    throw new InvocationTargetException(new NotEnoughEnergyException());
                 }
                 else if(e.getCause().getClass() == NotInRangeException.class)
                 {
-                    System.out.println("Je suis trop loin");
+                    throw new InvocationTargetException(new NotInRangeException());
                 }
                 else
                 {
@@ -79,14 +77,11 @@ public class Robot implements IRobot
      * @param g espace graphique sur lequel il doit se dessiner.
      */
     @Override
-    public void draw(Graphics g)
+    public void draw(Graphics g) throws InvocationTargetException
     {
         if(graphic != null)
         {
-            try
-            {
-                pluginProcessor.executeMethod(graphic, Graphic.Nature.MAIN, g);
-            } catch (Exception e) {}
+            pluginProcessor.executeMethod(graphic, Graphic.Nature.MAIN, this, g);
         }
     }
 
@@ -95,14 +90,24 @@ public class Robot implements IRobot
      * @param robots
      */
     @Override
-    public void move(ArrayList<IRobot> robots)
+    public void move(ArrayList<IRobot> robots) throws InvocationTargetException
     {
         if(move != null)
         {
             try
             {
                 pluginProcessor.executeMethod(move,  Move.Nature.MAIN, this, robots);
-            } catch (Exception e) {}
+            }
+            catch (InvocationTargetException e)
+            {
+                if(e.getCause().getClass() == NotEnoughEnergyException.class)
+                {
+                    System.out.println("Pas assez de mana.");
+                } else if(e.getCause().getClass() == NotInRangeException.class)
+                {
+                    System.out.println("Je suis trop loin.");
+                }
+            }
         }
     }
 
@@ -213,16 +218,16 @@ public class Robot implements IRobot
 
     @Override
     public Object getAttack() {
-        return attack;
+        return attack.instance;
     }
 
     @Override
     public Object getGraphic() {
-        return graphic;
+        return graphic.instance;
     }
 
     @Override
     public Object getMove() {
-        return move;
+        return move.instance;
     }
 }

@@ -1,8 +1,5 @@
 package processor;
 
-import entities.Tuple;
-import loader.PluginLoader;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,23 +9,17 @@ import java.lang.reflect.Method;
  */
 public class PluginProcessor
 {
-    private PluginLoader pluginLoader;
-
-    public PluginProcessor(PluginLoader pluginLoader)
-    {
-        this.pluginLoader = pluginLoader;
-    }
-
-    public void executeMethod(Tuple<?> tuple, Enum annotationEnum, Object... args) throws InvocationTargetException
+    public Object executeMethod(Tuple<?> tuple, Enum annotationEnum, Object... args) throws InvocationTargetException
     {
         try
         {
-            findMethod(tuple.type, annotationEnum).invoke(tuple.instance, args);
+            return findMethod(tuple.type, annotationEnum).invoke(tuple.instance, args);
         }
         catch (IllegalAccessException e)
         {
             e.printStackTrace();
         }
+        return null;
     }
 
     public Method findMethod(Class<?> c, Enum<?> annotationEnum)

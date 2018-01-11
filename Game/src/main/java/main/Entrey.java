@@ -30,8 +30,7 @@ public class Entrey
         List<Class<?>> myPlugin = myLoader.load();
         //System.out.println(myPlugin);
 
-        PluginProcessor pluginProcessor = new PluginProcessor(myLoader);
-        pluginProcessor.findMethod(myLoader.chercherClass("SpecialAttack"), Attack.Nature.MAIN);
+        PluginProcessor pluginProcessor = new PluginProcessor();
 
         JFrame f = new JFrame("RobotWar");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,12 +50,12 @@ public class Entrey
         addItemMenu(menuAttack);
         addListener(menuAttack);
 
-        War w = new War(500, 500, 2, pluginProcessor);
+        War w = new War(500, 500, 20, pluginProcessor);
         for(IRobot r : w.getRobots())
         {
-            r.setAttack(myLoader.chercherClass("SpecialAttack"));
-            r.setGraphic(myLoader.chercherClass("SpecialGraphic"));
-            r.setMove(myLoader.chercherClass("SpecialMove"));
+            r.setAttack(myLoader.chercherClass("LongRangeAttack"));
+            r.setGraphic(myLoader.chercherClass("RangeGraphic"));
+            r.setMove(myLoader.chercherClass("SchwarzeneggerMove"));
         }
         
         f.getContentPane().add(menu, BorderLayout.NORTH);
