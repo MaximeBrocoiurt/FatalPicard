@@ -53,16 +53,22 @@ public class War extends JPanel implements Runnable
     public void run()
     {
         int i = 0;
-        ArrayList<IRobot> ennemis;
+        ArrayList<IRobot> foes;
         while(robots.size() > 1)
         {
             System.out.format("Début du tour du robot ; il a %d vie, %d énergie et se trouve en %d;%d\n", robots.get(i).getLife(), robots.get(i).getEnergy(), robots.get(i).getX(), robots.get(i).getY());
             robots.get(i).increaseEnergy(ENERGY_REFILL);
-            ennemis = new ArrayList<>(robots);
-            ennemis.remove(i);
-            try{robots.get(i).move(ennemis);}
-            catch (Exception e) {e.printStackTrace();}
-            System.out.println("Le robot a agi.");
+            foes = new ArrayList<>(robots);
+            foes.remove(i);
+            try
+            {
+                robots.get(i).move(foes);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            System.out.format("Le robot a agi ; il se trouve désormais en %d;%d\n", robots.get(i).getX(), robots.get(i).getY());
             removeDestroyedRobots();
             repaint();
             try

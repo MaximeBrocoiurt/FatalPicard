@@ -1,4 +1,4 @@
-package exceptions;
+package engine.exceptions;
 
 public class NotEnoughEnergyException extends Exception
 {

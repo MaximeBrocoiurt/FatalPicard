@@ -2,8 +2,10 @@ package plugins.move;
 
 import annotations.Move;
 import annotations.Plugin;
+import engine.exceptions.NotEnoughEnergyException;
 import identity.IRobot;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,7 +16,7 @@ public class ChaoticMove
     private static final int ENERGY_CONSUMED = 5;
 
     @Move(nature = Move.Nature.MAIN)
-    public void move(IRobot subject, ArrayList<IRobot> foes)
+    public void move(IRobot subject, ArrayList<IRobot> foes) throws InvocationTargetException, NotEnoughEnergyException
     {
         IRobot closer = foes.get(new Random().nextInt(foes.size()));
         int distance = closer.calculateDistance(subject);
@@ -23,10 +25,7 @@ public class ChaoticMove
             subject.setX((DISTANCE * (closer.getX() - subject.getX())) / distance + subject.getX());
             subject.setY((DISTANCE * (closer.getY() - subject.getY())) / distance + subject.getY());
         }
-        try {subject.decreaseEnergy(ENERGY_CONSUMED);}catch (Exception e){}
-        try
-        {
-            subject.attack(closer);
-        } catch (Exception e) { e.printStackTrace(); }
+        subject.decreaseEnergy(ENERGY_CONSUMED);
+        subject.attack(closer);
     }
 }

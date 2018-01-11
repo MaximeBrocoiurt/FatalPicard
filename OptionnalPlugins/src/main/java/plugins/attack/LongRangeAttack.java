@@ -2,8 +2,8 @@ package plugins.attack;
 
 import annotations.Attack;
 import annotations.Plugin;
-import exceptions.NotEnoughEnergyException;
-import exceptions.NotInRangeException;
+import engine.exceptions.NotEnoughEnergyException;
+import engine.exceptions.NotInRangeException;
 import identity.IRobot;
 
 @Plugin(type = Plugin.Type.ATTACK)

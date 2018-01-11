@@ -2,8 +2,7 @@ package plugins.move;
 
 import annotations.Move;
 import annotations.Plugin;
-import exceptions.NotEnoughEnergyException;
-import exceptions.NotInRangeException;
+import engine.exceptions.NotEnoughEnergyException;
 import identity.IRobot;
 
 import java.lang.reflect.InvocationTargetException;
@@ -20,10 +19,7 @@ public class RandomMove
     @Move(nature = Move.Nature.MAIN)
     public void move(IRobot subject, ArrayList<IRobot> foes) throws NotEnoughEnergyException, InvocationTargetException
     {
-        if(target == null || target.getLife() <= 0)
-        {
-            target = foes.get(new Random().nextInt(foes.size()));
-        }
+        checkTarget(subject, foes);
         subject.decreaseEnergy(ENERGY_CONSUMED);
         int distance = target.calculateDistance(subject);
         if(distance != 0)
@@ -32,5 +28,11 @@ public class RandomMove
             subject.setY((DISTANCE * (target.getY() - subject.getY())) / distance + subject.getY());
         }
         subject.attack(target);
+    }
+
+    private void checkTarget(IRobot subject, ArrayList<IRobot> foes)
+    {
+        if(target == null || target.getLife() == 0)
+            target = foes.get(new Random().nextInt(foes.size()));
     }
 }

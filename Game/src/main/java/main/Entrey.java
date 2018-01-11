@@ -1,6 +1,6 @@
 package main;
 
-import annotations.Attack;
+import annotations.Plugin;
 import engine.War;
 import identity.IRobot;
 import loader.PluginLoader;
@@ -14,96 +14,127 @@ import java.io.File;
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import static java.lang.System.exit;
 
 public class Entrey
 {
     public static void main(String[] args)
     {
-        //On indique où se trouve le dossier contenant les .jar pour y chercher toutes les classes qu'ils faut charger
-        File basPathPlugin = new File(System.getProperty("user.dir") + File.separatorChar + "mandatoryplugins" + File.separatorChar + "target");
-//        File basPathPlugin = new File(System.getProperty("user.dir") + File.separator + "plugins");
+        //initialisation du classloader & du pluginprocessor
+        File basPathPlugin = new File(System.getProperty("user.dir") + File.separator + "mandatoryplugins" + File.separator + "target");
 
-
-        PluginLoader myLoader = new PluginLoader(basPathPlugin);
-        //Une fois chargé, elles sont disponible dans cette liste
-        List<Class<?>> myPlugin = myLoader.load();
-        //System.out.println(myPlugin);
-
+        PluginLoader pluginLoader = new PluginLoader(basPathPlugin);
         PluginProcessor pluginProcessor = new PluginProcessor();
 
-        JFrame f = new JFrame("RobotWar");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JButton start = new JButton();
-        start.setText("Start Game");
+        List<Class<?>> plugins = pluginLoader.getListClasses();
 
+        for (Class<?> c : plugins)
+        {
+            System.out.println("Classe trouvée : " + c);
+        }
+
+        //initialisation de l’interface graphique
+        JFrame f = new JFrame("RobotWar");
+        f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+        JButton startButton = new JButton();
         JMenuBar menu = new JMenuBar();
-        JMenu menuAttack = new JMenu("IAttack");
-        JMenu menuMove = new JMenu("IMove");
-        JMenu menuGraphique = new JMenu("IGraphique");
+
+        startButton.setText("TO THE FUTURE");
+        JMenu menuAttack = new JMenu("Attaque");
+        JMenu menuGraphic = new JMenu("Graphisme");
+        JMenu menuMove = new JMenu("Mouvement");
 
         menu.add(menuAttack);
+        menu.add(menuGraphic);
         menu.add(menuMove);
-        menu.add(menuGraphique);
 
-        //TODO: item à mettre dans le menu avec les classes chargé
-        addItemMenu(menuAttack);
-        addListener(menuAttack);
+        War w = new War(500, 500, 10, pluginProcessor);
 
-        War w = new War(500, 500, 20, pluginProcessor);
+        //mise en place des événements
+        for (Class<?> plugin : pluginLoader.getListClasses())
+        {
+            Annotation a = plugin.getAnnotation(Plugin.class);
+            if(a != null)
+            {
+                System.out.println(((Plugin)a).type() + " : " + plugin.getSimpleName());
+                switch(((Plugin)a).type())
+                {
+                    case ATTACK:
+                        menuAttack.add(new JMenuItem(new AbstractAction(plugin.getSimpleName())
+                        {
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                Class<?> c = pluginLoader.chercherClass(plugin.getSimpleName());
+                                for(IRobot r : w.getRobots())
+                                {
+                                    r.setAttack(c);
+                                }
+                            }
+                        }));
+                        break;
+                    case GRAPHIC:
+                        menuGraphic.add(new JMenuItem(new AbstractAction(plugin.getSimpleName())
+                        {
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                Class<?> c = pluginLoader.chercherClass(plugin.getSimpleName());
+                                for(IRobot r : w.getRobots())
+                                {
+                                    r.setGraphic(c);
+                                }
+                                w.repaint();
+                            }
+                        }));
+                        break;
+                    case MOVE:
+                        menuMove.add(new JMenuItem(new AbstractAction(plugin.getSimpleName())
+                        {
+                            public void actionPerformed(ActionEvent e)
+                            {
+                                Class<?> c = pluginLoader.chercherClass(plugin.getSimpleName());
+                                for(IRobot r : w.getRobots())
+                                {
+                                    r.setMove(c);
+                                }
+                            }
+                        }));
+                        break;
+                    default:
+                        System.out.println("ne devrait jamais arriver ¯_(ツ)_/¯");
+                        break;
+                }
+            }
+        }
+
+        //mise en place des plugins obligatoires
         for(IRobot r : w.getRobots())
         {
-            r.setAttack(myLoader.chercherClass("LongRangeAttack"));
-            r.setGraphic(myLoader.chercherClass("HealthBarGraphic"));
-            r.setMove(myLoader.chercherClass("SchwarzeneggerMove"));
+            r.setAttack(pluginLoader.chercherClass("SmallRangeAttack"));
+            r.setGraphic(pluginLoader.chercherClass("BasicGraphic"));
+            r.setMove(pluginLoader.chercherClass("HugMove"));
         }
-        
-        f.getContentPane().add(menu, BorderLayout.NORTH);
-        f.getContentPane().add(w, BorderLayout.CENTER);
-        f.getContentPane().add(start, BorderLayout.SOUTH);
 
-        start.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                w.launch();
-            }
-        });
+        //finition de la mise en place de l’interface graphique
+        f.getContentPane().add(w, BorderLayout.CENTER);
+        f.getContentPane().add(menu, BorderLayout.NORTH);
+        f.getContentPane().add(startButton, BorderLayout.SOUTH);
+
+        startButton.addActionListener(e -> { w.launch(); });
 
         f.pack();
         f.setVisible(true);
     }
 
-    /**
-     * Method for add item in menu passed in parameters
-     * @param menu
-     */
-    private static void addItemMenu(JMenu menu) {
-        JMenuItem newMenu = new JMenuItem("test");
+    public static void addItemMenu(JMenu menu, PluginLoader pluginLoader, Class<?> c)
+    {
+        JMenuItem newMenu = new JMenuItem(new AbstractAction(c.getSimpleName()) 
+        {
+            public void actionPerformed(ActionEvent e) 
+            {
+                System.out.println("Evenement de base");
+                pluginLoader.loadFile(c.getSimpleName());
+            }
+        });
         menu.add(newMenu);
-    }
-
-    /**
-     * method use for add listener for tab type
-     * @param tab
-     */
-    private static void addListener(JMenu tab) {
-        switch (tab.getText()) {
-            case "IAttack":
-                for (int i=0; i<tab.getItemCount(); i++) {
-                    JMenuItem item = tab.getItem(i);
-                    item.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            System.out.println("Evenement de base");
-                        }
-                    });
-                }
-                break;
-            case "IMove":
-                break;
-            case "IGraphique":
-                break;
-        }
     }
 }

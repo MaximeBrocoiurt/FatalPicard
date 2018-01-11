@@ -1,4 +1,4 @@
-package exceptions;
+package engine.exceptions;
 
 public class NotInRangeException extends Exception
 {

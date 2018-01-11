@@ -3,8 +3,8 @@ package entities;
 import annotations.Attack;
 import annotations.Graphic;
 import annotations.Move;
-import exceptions.NotEnoughEnergyException;
-import exceptions.NotInRangeException;
+import engine.exceptions.NotEnoughEnergyException;
+import engine.exceptions.NotInRangeException;
 import identity.IRobot;
 import processor.PluginProcessor;
 import processor.Tuple;
@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class Robot implements IRobot
 {
     private static final int BASE_LIFE = 100, BASE_ENERGY = 100;
-    private static final int BASE_DISTANCE = 5;
 
     private PluginProcessor pluginProcessor;
     private int life, energy;
@@ -44,7 +43,7 @@ public class Robot implements IRobot
     /**
      * demande au robot d’en attaquer un autre.
      * @param target
-     */
+     * */
     @Override
     public void attack(IRobot target) throws InvocationTargetException
     {
@@ -56,11 +55,11 @@ public class Robot implements IRobot
             }
             catch (InvocationTargetException e)
             {
-                if(e.getCause().getClass() == NotEnoughEnergyException.class)
+                if (e.getCause().getClass() == NotEnoughEnergyException.class)
                 {
                     throw new InvocationTargetException(new NotEnoughEnergyException());
                 }
-                else if(e.getCause().getClass() == NotInRangeException.class)
+                else if (e.getCause().getClass() == NotInRangeException.class)
                 {
                     throw new InvocationTargetException(new NotInRangeException());
                 }

@@ -9,38 +9,45 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.TimerTask;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 
-public class PluginLoader {
+public  class  PluginLoader  {
 
     private File repBase;
 
-    private List<Class<?>> listClasses;
+    private List<Class<?>> listClassesLoaded;
+
     private ArrayList<File> listJar = new ArrayList<File>();
 
     public PluginLoader(File base) {
         this.repBase = base;
         ArrayList<File> arrayRepository = new ArrayList<File>();
         arrayRepository.add(repBase);
-        this.listClasses = new ArrayList<Class<?>>();
-        listClasses=this.load();
-
+        this.listClassesLoaded = new ArrayList<Class<?>>();
+        listClassesLoaded=this.load();
     }
 
     /**
-     * Charge les classes
+     * Trouve toutes les classes dans les jar
      * @return returnListClass
      */
-    public List<Class<?>> load() {
-        List<Class<?>> listFoundClasses ;
+    public List<Class<?>>  load() {
         parcourirEnProfondeur(this.repBase);
-
-        listFoundClasses=loadJars();
-        return listFoundClasses;
+        listClassesLoaded=loadJars();
+        return listClassesLoaded;
     }
 
+    /**
+     * Charge une classe dans un jar
+     * @param nameClass
+     * @return
+     */
+    public Class<?> loadFile(String nameClass) {
+        return (loadFileInJar(nameClass));
+    }
 
     /**
      * Cherche des jar dans tous les sous-dossiers
@@ -73,7 +80,7 @@ public class PluginLoader {
      * Cherche les .class dans le Jar et les ajoute à la liste des classes à charger
      * @param
      */
-    private ArrayList<Class<?>> loadJars() {
+    private Class<?> loadFileInJar(String nameClassToLoad) {
         ArrayList<Class<?>> listFoundClasses= new ArrayList<Class<?>>();
         URL[] urls = new URL[10];
 
@@ -102,9 +109,16 @@ public class PluginLoader {
                     // -6 because of .class
                     className = je.getName().substring(0, je.getName().length() - 6);
                     className = className.replace('/', '.');
-                    Class c = cl.loadClass(className);
 
-                    listFoundClasses.add(c);
+                 //   System.out.println("On recherche "+nameClassToLoad);
+                    //  System.out.println("BIS "+className);
+
+                    if(className.equals(nameClassToLoad)){
+                        Class c = cl.loadClass(className);
+                        System.out.println("Classe Chargée");
+                        return c;
+                    }
+
 
                 }
             } catch (IOException e) {
@@ -119,18 +133,77 @@ public class PluginLoader {
             }
         }
 
-        return listFoundClasses;
-
+        return null;
 
     }
+
+    /**
+     * Charge le contenu des class des Jar trouvé
+     * @return
+     */
+    private List<Class<?>> loadJars() {
+        
+        URL[] urls = new URL[10];
+
+        for (int i = 0; i < listJar.size(); i++) {
+            try {
+                urls[i] = new URL("jar:file:" + listJar.get(i).getPath() + "!/");
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        URLClassLoader cl = new URLClassLoader(urls);
+
+        for(File file : listJar) {
+            JarFile jarFile = null;
+            try {
+                jarFile = new JarFile(file.getPath());
+
+                Enumeration<JarEntry> e = jarFile.entries();
+
+                while (e.hasMoreElements()) {
+                    JarEntry je = e.nextElement();
+                    if (je.isDirectory() || !je.getName().endsWith(".class")) {
+                        continue;
+                    }
+                    // -6 because of .class
+                    String className = je.getName().substring(0, je.getName().length() - 6);
+                    className = className.replace('/', '.');
+                    Class c = cl.loadClass(className);
+                    listClassesLoaded.add(c);
+                    }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NullPointerException e) {
+                //System.out.println("Le probleme est ici");
+                e.getLocalizedMessage();
+            }
+        }
+
+        return listClassesLoaded;
+
+    }
+
 
 
     public List<Class<?>> getListClasses() {
-        return listClasses;
+        return listClassesLoaded;
     }
 
+
+
+    /**
+     * Cherhcer une classe dans la liste de classe chargé
+     * @param name
+     * @return
+     */
     public Class chercherClass(String name){
-        for(Class clasz : this.listClasses){
+      //  System.out.println("ON recherche : "+name);
+        for(Class clasz : this.listClassesLoaded){
             //  System.out.println("Class.getName : "+clasz.getName());
             if(clasz.getName().contains(name)){
                 return clasz;
@@ -138,5 +211,7 @@ public class PluginLoader {
         }
         return null;
     }
+
+
 
 }

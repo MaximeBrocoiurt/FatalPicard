@@ -2,10 +2,8 @@ package plugins.move;
 
 import annotations.Move;
 import annotations.Plugin;
-import exceptions.NotEnoughEnergyException;
-import exceptions.NotInRangeException;
+import engine.exceptions.NotEnoughEnergyException;
 import identity.IRobot;
-import identity.exceptions.NoPluginException;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -27,14 +25,7 @@ public class HugMove
             subject.setX((DISTANCE * (closer.getX() - subject.getX())) / distance + subject.getX());
             subject.setY((DISTANCE * (closer.getY() - subject.getY())) / distance + subject.getY());
         }
-        try
-        {
-            subject.attack(closer);
-        }
-        catch (InvocationTargetException e)
-        {
-            e.printStackTrace();
-        }
+        subject.attack(closer);
     }
 
     /**

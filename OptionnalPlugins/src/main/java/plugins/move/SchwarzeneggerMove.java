@@ -1,13 +1,10 @@
 package plugins.move;
 
-import annotations.Attack;
 import annotations.Move;
 import annotations.Plugin;
-import exceptions.NotEnoughEnergyException;
-import exceptions.NotInRangeException;
+import engine.exceptions.NotEnoughEnergyException;
 import identity.IRobot;
 import processor.PluginProcessor;
-import processor.Tuple;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -18,7 +15,6 @@ public class SchwarzeneggerMove extends HugMove
     private static final int DISTANCE = 5;
     private static final int ENERGY_CONSUMED = 10;
     private IRobot target;
-    private PluginProcessor pluginProcessor = new PluginProcessor();
 
     @Override
     @Move(nature = Move.Nature.MAIN)
