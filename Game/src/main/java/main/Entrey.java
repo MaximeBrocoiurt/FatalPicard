@@ -48,7 +48,7 @@ public class Entrey
         menu.add(menuGraphic);
         menu.add(menuMove);
 
-        War w = new War(500, 500, 10, pluginProcessor);
+        War w = new War(500, 500, 20, pluginProcessor);
 
         //mise en place des événements
         for (Class<?> plugin : pluginLoader.getListClasses())
