@@ -54,7 +54,7 @@ public class Entrey
         for(IRobot r : w.getRobots())
         {
             r.setAttack(myLoader.chercherClass("LongRangeAttack"));
-            r.setGraphic(myLoader.chercherClass("RangeGraphic"));
+            r.setGraphic(myLoader.chercherClass("HealthBarGraphic"));
             r.setMove(myLoader.chercherClass("SchwarzeneggerMove"));
         }
         

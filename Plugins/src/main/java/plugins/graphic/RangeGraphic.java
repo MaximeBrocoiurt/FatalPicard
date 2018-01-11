@@ -32,7 +32,7 @@ public class RangeGraphic extends BaseGraphic
             e.printStackTrace();
         }
         g.setColor(Color.RED);
-        g.fillOval(subject.getX(), subject.getY(), range, range);
+        g.fillOval(subject.getX() - range / 2, subject.getY() - range / 2, range, range);
         super.draw(subject, g);
     }
 }
