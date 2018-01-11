@@ -20,7 +20,7 @@ public class Entrey
     public static void main(String[] args)
     {
         //initialisation du classloader & du pluginprocessor
-        File basPathPlugin = new File(System.getProperty("user.dir") + File.separator + "mandatoryplugins" + File.separator + "target");
+        File basPathPlugin = new File(System.getProperty("user.dir") + File.separator + "plugins");
 
         PluginLoader pluginLoader = new PluginLoader(basPathPlugin);
         PluginProcessor pluginProcessor = new PluginProcessor();
@@ -34,7 +34,7 @@ public class Entrey
 
         //initialisation de l’interface graphique
         JFrame f = new JFrame("RobotWar");
-        f.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JButton startButton = new JButton();
         JMenuBar menu = new JMenuBar();
@@ -82,7 +82,6 @@ public class Entrey
                                 {
                                     r.setGraphic(c);
                                 }
-                                w.repaint();
                             }
                         }));
                         break;
@@ -109,9 +108,12 @@ public class Entrey
         //mise en place des plugins obligatoires
         for(IRobot r : w.getRobots())
         {
-            r.setAttack(pluginLoader.chercherClass("SmallRangeAttack"));
-            r.setGraphic(pluginLoader.chercherClass("BasicGraphic"));
-            r.setMove(pluginLoader.chercherClass("HugMove"));
+            Class<?> c = pluginLoader.chercherClass("SmallRangeAttack");
+            r.setAttack(c);
+            c = pluginLoader.chercherClass("BaseGraphic");
+            r.setGraphic(c);
+            c = pluginLoader.chercherClass("HugMove");
+            r.setMove(c);
         }
 
         //finition de la mise en place de l’interface graphique
@@ -121,6 +123,7 @@ public class Entrey
 
         startButton.addActionListener(e -> { w.launch(); });
 
+        w.repaint();
         f.pack();
         f.setVisible(true);
     }

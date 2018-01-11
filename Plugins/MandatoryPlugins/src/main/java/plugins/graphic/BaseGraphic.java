@@ -10,8 +10,10 @@ import java.util.Random;
 @Plugin(type = Plugin.Type.GRAPHIC)
 public class BaseGraphic
 {
-    private Color c = randomColor();
     private static final int BASE_WIDTH = 10;
+    private Color c = randomColor();
+
+    public BaseGraphic() {}
 
     private Color randomColor()
     {

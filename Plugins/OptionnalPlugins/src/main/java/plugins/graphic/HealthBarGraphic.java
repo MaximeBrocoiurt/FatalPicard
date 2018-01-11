@@ -11,11 +11,6 @@ public class HealthBarGraphic extends BaseGraphic
 {
     private static final int BASE_WIDTH = 10;
 
-    public HealthBarGraphic()
-    {
-        super();
-    }
-
     @Graphic(nature = Graphic.Nature.MAIN)
     public void draw(IRobot subject, Graphics g)
     {

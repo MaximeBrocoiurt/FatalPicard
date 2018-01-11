@@ -1,14 +1,10 @@
 package entities;
 
-import annotations.Attack;
-import annotations.Graphic;
-import annotations.Move;
-import engine.exceptions.NotEnoughEnergyException;
-import engine.exceptions.NotInRangeException;
+import annotations.*;
+import engine.NotEnoughEnergyException;
+import engine.NotInRangeException;
 import identity.IRobot;
-import processor.PluginProcessor;
-import processor.Tuple;
-
+import processor.*;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
@@ -57,15 +53,15 @@ public class Robot implements IRobot
             {
                 if (e.getCause().getClass() == NotEnoughEnergyException.class)
                 {
-                    throw new InvocationTargetException(new NotEnoughEnergyException());
+                    throw new InvocationTargetException(e);
                 }
                 else if (e.getCause().getClass() == NotInRangeException.class)
                 {
-                    throw new InvocationTargetException(new NotInRangeException());
+                    throw new InvocationTargetException(e);
                 }
                 else
                 {
-                    throw new InvocationTargetException(e);
+                    e.printStackTrace();
                 }
             }
         }
@@ -195,7 +191,10 @@ public class Robot implements IRobot
         try
         {
             this.attack = new Tuple<>(c);
-        } catch (Exception e) {}
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override

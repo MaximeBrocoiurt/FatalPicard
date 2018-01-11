@@ -1,6 +1,6 @@
 package identity;
 
-import engine.exceptions.NotEnoughEnergyException;
+import engine.NotEnoughEnergyException;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;

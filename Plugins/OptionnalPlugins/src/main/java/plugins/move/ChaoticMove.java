@@ -2,7 +2,7 @@ package plugins.move;
 
 import annotations.Move;
 import annotations.Plugin;
-import engine.exceptions.NotEnoughEnergyException;
+import engine.*;
 import identity.IRobot;
 
 import java.lang.reflect.InvocationTargetException;

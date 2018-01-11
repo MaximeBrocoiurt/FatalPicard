@@ -9,8 +9,8 @@
     <packaging>pom</packaging>
     <version>0.1</version>
     <modules>
-        <module>OptionnalPlugins</module>
-        <module>MandatoryPlugins</module>
+        <module>Plugins/OptionnalPlugins</module>
+        <module>Plugins/MandatoryPlugins</module>
         <module>Game</module>
         <module>Shared</module>
     </modules>

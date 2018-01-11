@@ -20,14 +20,14 @@ public  class  PluginLoader  {
 
     private List<Class<?>> listClassesLoaded;
 
-    private ArrayList<File> listJar = new ArrayList<File>();
+    private ArrayList<File> listJar = new ArrayList<>();
 
     public PluginLoader(File base) {
         this.repBase = base;
-        ArrayList<File> arrayRepository = new ArrayList<File>();
+        ArrayList<File> arrayRepository = new ArrayList<>();
         arrayRepository.add(repBase);
-        this.listClassesLoaded = new ArrayList<Class<?>>();
-        listClassesLoaded=this.load();
+        this.listClassesLoaded = new ArrayList<>();
+        listClassesLoaded = this.load();
     }
 
     /**
