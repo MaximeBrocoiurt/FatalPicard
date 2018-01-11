@@ -21,7 +21,7 @@ public class Entrey
     public static void main(String[] args)
     {
         //On indique où se trouve le dossier contenant les .jar pour y chercher toutes les classes qu'ils faut charger
-        File basPathPlugin = new File(System.getProperty("user.dir") + File.separatorChar + "plugins" + File.separatorChar + "target");
+        File basPathPlugin = new File(System.getProperty("user.dir") + File.separatorChar + "mandatoryplugins" + File.separatorChar + "target");
 //        File basPathPlugin = new File(System.getProperty("user.dir") + File.separator + "plugins");
 
 
