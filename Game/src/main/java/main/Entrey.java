@@ -128,16 +128,4 @@ public class Entrey
         f.setVisible(true);
     }
 
-    public static void addItemMenu(JMenu menu, PluginLoader pluginLoader, Class<?> c)
-    {
-        JMenuItem newMenu = new JMenuItem(new AbstractAction(c.getSimpleName()) 
-        {
-            public void actionPerformed(ActionEvent e) 
-            {
-                System.out.println("Evenement de base");
-                pluginLoader.loadFile(c.getSimpleName());
-            }
-        });
-        menu.add(newMenu);
-    }
 }
